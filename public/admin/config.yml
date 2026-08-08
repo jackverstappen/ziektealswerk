@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: ZIEKTE-WERK/site          # pas aan naar de echte repo
+  repo: jackverstappen/ziektealswerk
   branch: main
   base_url: https://ziekte-werk-auth.workers.dev   # de Sveltia-inlogworker op Cloudflare
 
