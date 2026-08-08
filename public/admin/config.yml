@@ -4,7 +4,7 @@ backend:
   branch: main
   base_url: https://sveltia-cms-auth.jack-verstappen.workers.dev   # de Sveltia-inlogworker op Cloudflare
 
-media_folder: "site/public/media"
+media_folder: "public/media"
 public_folder: "/media"
 locale: nl
 publish_mode: simple
@@ -13,7 +13,7 @@ collections:
   - name: nummers
     label: "Publicaties"
     label_singular: "Nummer"
-    folder: "site/src/content/nummers"
+    folder: "src/content/nummers"
     create: true
     slug: "{{nummer}}"
     summary: "Nummer {{nummer}} — {{titel}}"
@@ -25,8 +25,8 @@ collections:
       - { name: paginas, label: "Aantal pagina's", widget: number, value_type: int }
       - { name: status, label: "Status", widget: select, options: ["Nieuw", "Te bestellen", "Uitverkocht in print", "In de maak"] }
       - { name: verschenen, label: "Verschenen op", widget: datetime, time_format: false, picker_utc: false }
-      - { name: omslag, label: "Omslag (afbeelding)", widget: image, media_folder: "/site/public/omslag", public_folder: "/omslag" }
-      - { name: pdf, label: "PDF van het nummer", widget: file, media_folder: "/site/public/pdf", public_folder: "/pdf", hint: "De pagina's worden hier automatisch uit gehaald. Niets extra's uploaden." }
+      - { name: omslag, label: "Omslag (afbeelding)", widget: image, media_folder: "/public/omslag", public_folder: "/omslag" }
+      - { name: pdf, label: "PDF van het nummer", widget: file, media_folder: "/public/pdf", public_folder: "/pdf", hint: "De pagina's worden hier automatisch uit gehaald. Niets extra's uploaden." }
       - name: artikelen
         label: "Artikelen"
         widget: list
@@ -47,7 +47,7 @@ collections:
   - name: events
     label: "Agenda"
     label_singular: "Bijeenkomst"
-    folder: "site/src/content/events"
+    folder: "src/content/events"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     sortable_fields: [datum]
@@ -63,7 +63,7 @@ collections:
   - name: nieuws
     label: "Nieuws"
     label_singular: "Bericht"
-    folder: "site/src/content/nieuws"
+    folder: "src/content/nieuws"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     sortable_fields: [datum]
