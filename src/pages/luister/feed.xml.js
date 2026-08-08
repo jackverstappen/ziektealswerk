@@ -21,6 +21,16 @@ const duur = (s = 0) =>
     .map((n) => String(n).padStart(2, "0"))
     .join(":");
 
+// Podcast-apps leiden het formaat af uit dit type, niet uit de bestandsnaam.
+const mimetype = (url = "") => {
+  const ext = url.split("?")[0].split(".").pop().toLowerCase();
+  if (ext === "m4a") return "audio/x-m4a";
+  if (ext === "mp4" || ext === "m4b") return "audio/mp4";
+  if (ext === "aac") return "audio/aac";
+  if (ext === "wav") return "audio/wav";
+  return "audio/mpeg";
+};
+
 export async function GET({ site }) {
   const basis = site.href.replace(/\/$/, "");
   const nummers = await getCollection("nummers");
@@ -45,7 +55,7 @@ export async function GET({ site }) {
       <itunes:duration>${duur(a.duur)}</itunes:duration>
       <itunes:season>${a.nummer}</itunes:season>
       <itunes:episode>${parseInt(a.n, 10)}</itunes:episode>
-      <enclosure url="${esc(a.audio)}" length="${a.bytes ?? 0}" type="audio/mpeg"/>
+      <enclosure url="${esc(a.audio)}" length="${a.bytes ?? 0}" type="${mimetype(a.audio)}"/>
     </item>`
     )
     .join("\n");
