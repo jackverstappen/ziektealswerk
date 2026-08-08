@@ -15,7 +15,7 @@ const nummers = defineCollection({
     status: z.enum(["Nieuw", "Te bestellen", "Uitverkocht in print", "In de maak"]),
     omslag: z.string(),                 // pad in /public, bv. /omslag/1.jpg
     pdf: z.string(),                    // pad in /public, bv. /pdf/nummer-1.pdf
-    verschenen: z.date(),
+    verschenen: z.coerce.date(),
     artikelen: z.array(
       z.object({
         n: z.string(),                  // "01" — ligt vast, staat in gedrukte QR-codes
@@ -36,8 +36,8 @@ const events = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/events" }),
   schema: z.object({
     titel: z.string(),
-    datum: z.date(),
-    eindtijd: z.date().optional(),
+    datum: z.coerce.date(),
+    eindtijd: z.coerce.date().optional(),
     plaats: z.string(),
     soort: z.enum(["Leesgroep", "Presentatie", "Werksessie", "Gesprek", "Tentoonstelling"]),
     aanmelden: z.string().optional()
@@ -48,7 +48,7 @@ const nieuws = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/nieuws" }),
   schema: z.object({
     titel: z.string(),
-    datum: z.date(),
+    datum: z.coerce.date(),
     soort: z.enum(["Aankondiging", "Open oproep", "Pers"]).default("Aankondiging"),
     bron: z.string().optional()
   })

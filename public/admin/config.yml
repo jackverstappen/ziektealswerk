@@ -54,7 +54,7 @@ collections:
     fields:
       - { name: titel, label: "Titel", widget: string }
       - { name: datum, label: "Datum en tijd", widget: datetime, picker_utc: false, format: "YYYY-MM-DDTHH:mm:ssZ" }
-      - { name: eindtijd, label: "Eindtijd", widget: datetime, picker_utc: false, required: false }
+      - { name: eindtijd, label: "Eindtijd", widget: datetime, picker_utc: false, required: false, format: "YYYY-MM-DDTHH:mm:ssZ" }
       - { name: plaats, label: "Plaats", widget: string }
       - { name: soort, label: "Soort", widget: select, options: ["Leesgroep", "Presentatie", "Werksessie", "Gesprek", "Tentoonstelling"] }
       - { name: aanmelden, label: "Aanmeldlink of e-mail", widget: string, required: false }
