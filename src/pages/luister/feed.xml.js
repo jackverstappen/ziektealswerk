@@ -74,7 +74,7 @@ export async function GET({ site }) {
       <itunes:email>${esc(SHOW.email)}</itunes:email>
     </itunes:owner>
     <itunes:image href="${basis}${SHOW.omslag}"/>
-    <itunes:category text="${SHOW.categorie}"/>
+    <itunes:category text="${esc(SHOW.categorie)}"/>
     <itunes:explicit>false</itunes:explicit>
 ${items}
   </channel>
