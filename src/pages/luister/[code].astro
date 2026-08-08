@@ -1,0 +1,154 @@
+---
+import Basis from "../../layouts/Basis.astro";
+import { getCollection } from "astro:content";
+import QRCode from "qrcode";
+
+/**
+ * Eén route voor twee soorten pagina's, zodat de adressen kloppen met wat er
+ * gedrukt wordt:
+ *   /luister/1      overzicht van het nummer + het QR-vel voor de opmaak
+ *   /luister/1-07   de pagina achter de QR-code bij artikel 07
+ * Deze adressen liggen vast zodra er iets gedrukt is. Nooit meer wijzigen.
+ */
+export async function getStaticPaths() {
+  const nummers = await getCollection("nummers");
+  const paden = [];
+  for (const n of nummers) {
+    paden.push({ params: { code: String(n.data.nummer) }, props: { soort: "nummer", n } });
+    n.data.artikelen.forEach((a, i) =>
+      paden.push({
+        params: { code: `${n.data.nummer}-${a.n}` },
+        props: {
+          soort: "artikel",
+          nummer: n.data.nummer,
+          artikel: a,
+          vorige: n.data.artikelen[i - 1],
+          volgende: n.data.artikelen[i + 1]
+        }
+      })
+    );
+  }
+  return paden;
+}
+
+const { soort, n, nummer, artikel, vorige, volgende } = Astro.props;
+const basis = Astro.site.href.replace(/\/$/, "");
+const klok = (s = 0) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, "0")}`;
+
+const codes =
+  soort === "nummer"
+    ? await Promise.all(
+        n.data.artikelen.map(async (a) => {
+          const url = `${basis}/luister/${n.data.nummer}-${a.n}`;
+          return {
+            ...a,
+            url,
+            svg: await QRCode.toString(url, {
+              type: "svg",
+              errorCorrectionLevel: "Q",
+              margin: 4,
+              color: { dark: "#1d2d3d", light: "#ffffff" }
+            })
+          };
+        })
+      )
+    : [];
+---
+
+{soort === "nummer" ? (
+  <Basis titel={`Nummer ${n.data.nummer} beluisteren`}>
+    <section style="padding: clamp(32px, 7vw, 52px) clamp(16px, 4vw, 32px) 30px; border-bottom: 1px solid var(--color-text)">
+      <h1 style="font-size: clamp(40px, 6vw, 92px); line-height: 0.9; text-transform: lowercase; margin: 0 0 20px">
+        nummer {n.data.nummer}, ingesproken
+      </h1>
+      <p style="font-size: 18px; max-width: 46ch; margin: 0 0 14px">
+        Elk artikel is voorgelezen. De QR-code staat bij het artikel in de publicatie,
+        maar je kunt hier ook alles achter elkaar beluisteren.
+      </p>
+      <p style="font-size: 14px">Liever in je podcast-app? <a href="/luister/feed.xml">Voeg deze feed toe</a>.</p>
+    </section>
+
+    <section style="padding: clamp(24px, 5vw, 36px) clamp(16px, 4vw, 32px)">
+      <div style="border-top: 1px solid var(--color-text)">
+        {n.data.artikelen.map((a) => (
+          <div style="display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; padding: 14px 4px; border-bottom: 1px solid var(--color-divider)">
+            <span style="flex: 0 0 46px; font-family: var(--font-heading); color: var(--color-accent-700)">{n.data.nummer}-{a.n}</span>
+            <div style="flex: 2 1 240px; min-width: 0">
+              <div style="font-family: var(--font-heading); font-size: 23px; line-height: 1.1">{a.titel}</div>
+              <div style="font-size: 13.5px; color: color-mix(in srgb, var(--color-text) 68%, transparent)">{a.auteur}</div>
+            </div>
+            {a.audio && <audio controls preload="none" src={a.audio} style="flex: 1 1 260px; height: 34px"></audio>}
+            <span style="font-size: 14px; font-variant-numeric: tabular-nums">{klok(a.duur)}</span>
+            <a href={`/luister/${n.data.nummer}-${a.n}`} style="margin-left: auto; font-family: var(--font-heading); text-transform: uppercase; font-size: 14px">Pagina →</a>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section style="padding: 20px clamp(16px, 4vw, 32px) 56px">
+      <h2 style="font-size: clamp(26px, 3vw, 38px); margin: 0 0 8px">QR-codes voor de opmaak</h2>
+      <p style="font-size: 15px; max-width: 60ch; margin: 0 0 20px">
+        Minimaal 20 × 20 mm drukken, witruimte rondom laten staan, donker op licht.
+        Zet de URL er klein onder als terugval.
+      </p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr)); gap: 22px">
+        {codes.map((c) => (
+          <figure class="blueprint" style="margin: 0; padding: 18px; border-radius: 0">
+            <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+            <div style="background: #fff" set:html={c.svg}></div>
+            <figcaption style="margin-top: 10px">
+              <div style="font-family: var(--font-heading); font-size: 18px">{c.titel}</div>
+              <div style="font-size: 12px; word-break: break-all">{c.url.replace("https://", "")}</div>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+  </Basis>
+) : (
+  <Basis titel={artikel.titel} omschrijving={artikel.samenvatting}>
+    <main style="max-width: 620px; margin: 0 auto; padding: clamp(24px, 6vw, 34px) clamp(14px, 4vw, 24px) 64px">
+      <div style="font-family: var(--font-heading); font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: 14px">
+        Gesproken versie · nummer {nummer} · artikel {artikel.n}
+      </div>
+      <h1 style="font-size: clamp(34px, 6vw, 54px); line-height: 0.98; margin: 0 0 10px">{artikel.titel}</h1>
+      <p style="font-size: 16px; margin: 0 0 28px; color: color-mix(in srgb, var(--color-text) 70%, transparent)">
+        {artikel.auteur}{artikel.lezer && ` · voorgelezen door ${artikel.lezer}`}{artikel.duur && ` · ${klok(artikel.duur)}`}
+      </p>
+
+      {artikel.audio ? (
+        <div class="blueprint" style="padding: 22px; border-radius: 0">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <audio controls preload="metadata" src={artikel.audio} style="width: 100%"></audio>
+          <p style="margin: 14px 0 0; font-size: 14px">
+            <a href={artikel.audio} download>Download de mp3</a> · <a href={`/lezen/${nummer}`}>lees dit nummer</a>
+          </p>
+        </div>
+      ) : (
+        <p style="font-size: 16px">De opname van dit artikel is er nog niet. Hij komt eraan.</p>
+      )}
+
+      {artikel.transcript && (
+        <section style="margin-top: 34px">
+          <h2 style="font-size: 22px; letter-spacing: 0.06em; text-transform: uppercase; margin: 0 0 14px">Transcript</h2>
+          <p style="font-size: 19px; line-height: 1.7; white-space: pre-wrap; text-wrap: pretty; margin: 0">{artikel.transcript}</p>
+        </section>
+      )}
+
+      <nav style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; margin-top: 40px; background: var(--color-divider); border: 1px solid var(--color-divider)">
+        {vorige && (
+          <a href={`/luister/${nummer}-${vorige.n}`} style="background: var(--color-bg); padding: 18px; color: inherit">
+            <div style="font-size: 12px; text-transform: uppercase; color: var(--color-accent-700)">← Vorige</div>
+            <div style="font-family: var(--font-heading); font-size: 20px">{vorige.titel}</div>
+          </a>
+        )}
+        {volgende && (
+          <a href={`/luister/${nummer}-${volgende.n}`} style="background: var(--color-bg); padding: 18px; color: inherit; text-align: right">
+            <div style="font-size: 12px; text-transform: uppercase; color: var(--color-accent-700)">Volgende →</div>
+            <div style="font-family: var(--font-heading); font-size: 20px">{volgende.titel}</div>
+          </a>
+        )}
+      </nav>
+    </main>
+  </Basis>
+)}

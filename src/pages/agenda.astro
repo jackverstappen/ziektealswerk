@@ -1,0 +1,74 @@
+---
+import Basis from "../layouts/Basis.astro";
+import { getCollection, render } from "astro:content";
+
+const nu = new Date();
+const alle = (await getCollection("events")).sort((a, b) => a.data.datum - b.data.datum);
+const komend = alle.filter((e) => e.data.datum >= nu);
+const geweest = alle.filter((e) => e.data.datum < nu).reverse();
+
+const dag = (d) => d.toLocaleDateString("nl-NL", { day: "2-digit", month: "short" }).toUpperCase().replace(".", "");
+const tijd = (d) => d.toLocaleTimeString("nl-NL", { hour: "2-digit", minute: "2-digit" });
+const maand = (d) => d.toLocaleDateString("nl-NL", { month: "long", year: "numeric" });
+
+const toelichting = Object.fromEntries(
+  await Promise.all(komend.map(async (e) => [e.id, (await render(e)).Content]))
+);
+---
+
+<Basis titel="Agenda">
+  <section style="padding: clamp(28px, 6vw, 44px) clamp(16px, 4vw, 32px) 48px">
+    <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 26px">
+      <div>
+        <h6 style="color: var(--color-accent-700); margin: 0 0 12px">Agenda</h6>
+        <h1 style="font-size: clamp(30px, 4vw, 50px); line-height: 1.02; margin: 0">Wat er binnenkort gebeurt</h1>
+      </div>
+      <p style="font-size: 14.5px; max-width: 40ch; margin: 0; color: color-mix(in srgb, var(--color-text) 70%, transparent)">
+        Alle bijeenkomsten zijn gratis, hebben pauzes, en je mag altijd op het laatste moment afzeggen.
+      </p>
+    </div>
+
+    {komend.length === 0 && (
+      <p style="font-size: 17px">Er staat nu niets gepland. Schrijf ons als je iets wilt organiseren.</p>
+    )}
+
+    <div style="border-top: 1px solid var(--color-text)">
+      {komend.map((e) => {
+        const Inhoud = toelichting[e.id];
+        return (
+          <article style="display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: baseline; padding: 18px 4px; border-bottom: 1px solid var(--color-divider)">
+            <span style="flex: 0 0 96px; font-family: var(--font-heading); font-size: 26px; line-height: 1">{dag(e.data.datum)}</span>
+            <div style="flex: 1 1 260px">
+              <div style="font-family: var(--font-heading); font-size: 26px; line-height: 1.05">{e.data.titel}</div>
+              <div style="font-size: 14.5px; color: color-mix(in srgb, var(--color-text) 72%, transparent)">
+                {tijd(e.data.datum)}{e.data.eindtijd && `–${tijd(e.data.eindtijd)}`} · {e.data.plaats}
+              </div>
+              <div style="font-size: 14.5px; line-height: 1.55; margin-top: 6px"><Inhoud /></div>
+            </div>
+            <span class="tag tag-accent" style="border-radius: 0; margin-left: auto; flex: 0 0 auto">{e.data.soort}</span>
+            {e.data.aanmelden && (
+              <a class="btn btn-secondary" href={e.data.aanmelden.includes("@") ? `mailto:${e.data.aanmelden}` : e.data.aanmelden} style="border-radius: 0; flex: 0 0 auto">Aanmelden</a>
+            )}
+          </article>
+        );
+      })}
+    </div>
+
+    {geweest.length > 0 && (
+      <details style="margin-top: 22px">
+        <summary style="cursor: pointer; font-family: var(--font-heading); font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700)">
+          Archief — wat we eerder deden
+        </summary>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1px; margin-top: 18px; background: var(--color-divider); border: 1px solid var(--color-divider)">
+          {geweest.map((e) => (
+            <div style="background: var(--color-bg); padding: 16px">
+              <div style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-700)">{maand(e.data.datum)}</div>
+              <div style="font-family: var(--font-heading); font-size: 20px; line-height: 1.1; margin: 4px 0 6px">{e.data.titel}</div>
+              <div style="font-size: 13.5px; color: color-mix(in srgb, var(--color-text) 70%, transparent)">{e.data.plaats}</div>
+            </div>
+          ))}
+        </div>
+      </details>
+    )}
+  </section>
+</Basis>

@@ -1,0 +1,21 @@
+{
+  "name": "ziekte-werk",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "node scripts/render-pdf.mjs && astro build",
+    "preview": "astro preview",
+    "paginas": "node scripts/render-pdf.mjs",
+    "paginas:forceer": "node scripts/render-pdf.mjs --forceer"
+  },
+  "dependencies": {
+    "astro": "^7.2.0"
+  },
+  "devDependencies": {
+    "@napi-rs/canvas": "^0.1.60",
+    "pdfjs-dist": "^4.6.82",
+    "qrcode": "^1.5.4"
+  }
+}

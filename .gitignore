@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+*.log
+
+# De pagina-afbeeldingen worden bij het bouwen uit de PDF gehaald.
+# Wil je ze meecommitten (snellere builds op Cloudflare), haal dan de
+# volgende regel weg.
+public/pagina/

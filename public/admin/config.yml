@@ -1,0 +1,75 @@
+backend:
+  name: github
+  repo: ZIEKTE-WERK/site          # pas aan naar de echte repo
+  branch: main
+  base_url: https://ziekte-werk-auth.workers.dev   # de Sveltia-inlogworker op Cloudflare
+
+media_folder: "site/public/media"
+public_folder: "/media"
+locale: nl
+publish_mode: simple
+
+collections:
+  - name: nummers
+    label: "Publicaties"
+    label_singular: "Nummer"
+    folder: "site/src/content/nummers"
+    create: true
+    slug: "{{nummer}}"
+    summary: "Nummer {{nummer}} — {{titel}}"
+    fields:
+      - { name: nummer, label: "Nummernummer", widget: number, value_type: int, hint: "1, 2, 3 … Dit staat in de gedrukte QR-codes en verandert nooit meer." }
+      - { name: titel, label: "Titel", widget: string }
+      - { name: ondertitel, label: "Ondertitel", widget: string, required: false }
+      - { name: jaar, label: "Jaar", widget: number, value_type: int }
+      - { name: paginas, label: "Aantal pagina's", widget: number, value_type: int }
+      - { name: status, label: "Status", widget: select, options: ["Nieuw", "Te bestellen", "Uitverkocht in print", "In de maak"] }
+      - { name: verschenen, label: "Verschenen op", widget: datetime, time_format: false, picker_utc: false }
+      - { name: omslag, label: "Omslag (afbeelding)", widget: image, media_folder: "/site/public/omslag", public_folder: "/omslag" }
+      - { name: pdf, label: "PDF van het nummer", widget: file, media_folder: "/site/public/pdf", public_folder: "/pdf", hint: "De pagina's worden hier automatisch uit gehaald. Niets extra's uploaden." }
+      - name: artikelen
+        label: "Artikelen"
+        widget: list
+        label_singular: "Artikel"
+        summary: "{{fields.n}} — {{fields.titel}}"
+        fields:
+          - { name: n, label: "Volgnummer", widget: string, pattern: ['^\d{2}$', "Twee cijfers, bijvoorbeeld 07"], hint: "Staat in de gedrukte QR-code. Nooit meer wijzigen." }
+          - { name: titel, label: "Titel", widget: string }
+          - { name: auteur, label: "Auteur", widget: string }
+          - { name: lezer, label: "Ingesproken door", widget: string, required: false }
+          - { name: samenvatting, label: "Korte samenvatting", widget: text, hint: "Twee regels. Dit staat in de podcast-apps." }
+          - { name: audio, label: "Link naar de mp3", widget: string, required: false, hint: "Volledige URL, bijvoorbeeld van Internet Archive. Niet hier uploaden — mp3's zijn te groot voor de site." }
+          - { name: duur, label: "Duur in seconden", widget: number, value_type: int, required: false }
+          - { name: bytes, label: "Bestandsgrootte in bytes", widget: number, value_type: int, required: false, hint: "Rechtsklik het bestand → Info. Podcast-apps vragen erom." }
+          - { name: transcript, label: "Transcript", widget: text, required: false, hint: "Wordt de leesmodus voor wie niet kan luisteren of het beeld niet kan zien." }
+      - { name: body, label: "Inleiding", widget: markdown, required: false }
+
+  - name: events
+    label: "Agenda"
+    label_singular: "Bijeenkomst"
+    folder: "site/src/content/events"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    sortable_fields: [datum]
+    fields:
+      - { name: titel, label: "Titel", widget: string }
+      - { name: datum, label: "Datum en tijd", widget: datetime, picker_utc: false, format: "YYYY-MM-DDTHH:mm:ssZ" }
+      - { name: eindtijd, label: "Eindtijd", widget: datetime, picker_utc: false, required: false }
+      - { name: plaats, label: "Plaats", widget: string }
+      - { name: soort, label: "Soort", widget: select, options: ["Leesgroep", "Presentatie", "Werksessie", "Gesprek", "Tentoonstelling"] }
+      - { name: aanmelden, label: "Aanmeldlink of e-mail", widget: string, required: false }
+      - { name: body, label: "Toelichting", widget: markdown, required: false }
+
+  - name: nieuws
+    label: "Nieuws"
+    label_singular: "Bericht"
+    folder: "site/src/content/nieuws"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    sortable_fields: [datum]
+    fields:
+      - { name: titel, label: "Titel", widget: string }
+      - { name: datum, label: "Datum", widget: datetime, time_format: false, picker_utc: false }
+      - { name: soort, label: "Soort", widget: select, options: ["Aankondiging", "Open oproep", "Pers"] }
+      - { name: bron, label: "Bron (bij pers)", widget: string, required: false }
+      - { name: body, label: "Tekst", widget: markdown }

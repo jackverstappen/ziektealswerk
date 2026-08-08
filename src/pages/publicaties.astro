@@ -1,0 +1,70 @@
+---
+import Basis from "../layouts/Basis.astro";
+import { getCollection } from "astro:content";
+
+const nummers = (await getCollection("nummers")).sort((a, b) => a.data.nummer - b.data.nummer);
+---
+
+<Basis titel="Publicaties">
+  <section style="padding: clamp(34px, 7vw, 56px) clamp(16px, 4vw, 32px) 36px; border-bottom: 1px solid var(--color-text)">
+    <h6 style="color: var(--color-accent-700); margin: 0 0 18px">Publicaties</h6>
+    <h1 style="font-size: clamp(44px, 8vw, 120px); line-height: 0.9; letter-spacing: -0.03em; text-transform: lowercase; margin: 0 0 22px; max-width: 16ch">
+      alles wat we tot nu toe maakten
+    </h1>
+    <p style="font-size: 19px; line-height: 1.4; max-width: 46ch; margin: 0">
+      Elk nummer is gratis online te lezen en te downloaden als PDF. Wil je een papieren
+      exemplaar, of kun je het niet betalen? Mail ons — dan sturen we er een op.
+    </p>
+  </section>
+
+  <section style="padding: 0 clamp(16px, 4vw, 32px) 48px">
+    <div style="overflow-x: auto; margin-top: 20px">
+      <table class="table" style="width: 100%; min-width: 640px">
+        <thead>
+          <tr><th>Nr.</th><th>Titel</th><th>Jaar</th><th>Omvang</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody>
+          {nummers.map((n) => (
+            <tr>
+              <td style="font-family: var(--font-heading); font-size: 18px">{String(n.data.nummer).padStart(2, "0")}</td>
+              <td style="font-family: var(--font-heading); font-size: 20px">{n.data.titel}</td>
+              <td>{n.data.jaar}</td>
+              <td>{n.data.paginas} p.</td>
+              <td><span class="tag tag-outline" style="border-radius: 0">{n.data.status}</span></td>
+              <td style="text-align: right; white-space: nowrap">
+                <a href={`/lezen/${n.data.nummer}`} style="font-family: var(--font-heading); letter-spacing: 0.08em; text-transform: uppercase">Lees online</a>
+                <span style="opacity: 0.4">·</span>
+                <a href={`/luister/${n.data.nummer}`} style="font-family: var(--font-heading); letter-spacing: 0.08em; text-transform: uppercase">Luister</a>
+                <span style="opacity: 0.4">·</span>
+                <a href={n.data.pdf} download style="font-family: var(--font-heading); letter-spacing: 0.08em; text-transform: uppercase">PDF</a>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <h2 style="font-size: 34px; margin: 46px 0 16px">Losse artikelen</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: var(--color-divider); border: 1px solid var(--color-divider)">
+      {nummers.flatMap((n) =>
+        n.data.artikelen.map((a) => (
+          <article style="background: var(--color-bg); padding: 20px; display: flex; flex-direction: column; gap: 6px">
+            <div style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-700)">
+              Nummer {n.data.nummer} · {n.data.jaar}
+            </div>
+            <h3 style="font-size: 22px; line-height: 1.1; margin: 0">
+              <a href={`/luister/${n.data.nummer}-${a.n}`} style="color: inherit">{a.titel}</a>
+            </h3>
+            <p style="font-size: 14.5px; line-height: 1.55; margin: 0; color: color-mix(in srgb, var(--color-text) 74%, transparent)">
+              {a.auteur}{a.audio && " · ook ingesproken"}
+            </p>
+          </article>
+        ))
+      )}
+    </div>
+
+    <p style="margin-top: 40px; font-size: 17px">
+      Vragen over bestellen of rechten? <a href="/#contact">Neem contact op</a>.
+    </p>
+  </section>
+</Basis>
