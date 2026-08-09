@@ -31,10 +31,13 @@ async function nummersUitContent() {
   return Promise.all(
     bestanden.map(async (f) => {
       const tekst = await readFile(join(map, f), "utf8");
-      const kop = tekst.split(/^---$/m)[1] ?? "";
-      const nummer = Number(/^nummer:\s*(\d+)/m.exec(kop)?.[1]);
-      const pdf = /^pdf:\s*["']?([^"'\n]+)/m.exec(kop)?.[1]?.trim();
-      return { nummer, pdf, bron: f };
+      // De kop staat tussen twee regels met ---; het CMS laat er soms
+      // spaties of een Windows-regeleinde achter, vandaar de ruimere match.
+      const kop = /^---\r?\n([\s\S]*?)\r?\n---/.exec(tekst)?.[1] ?? "";
+      const nummer = Number(/^nummer:\s*["']?(\d+)/m.exec(kop)?.[1]);
+      const pdf = /^pdf:\s*["']?([^"'\r\n]+)/m.exec(kop)?.[1]?.trim();
+      const paginas = Number(/^paginas:\s*["']?(\d+)/m.exec(kop)?.[1]);
+      return { nummer, pdf, paginas, bron: f };
     })
   );
 }
@@ -47,7 +50,25 @@ async function rendered(nummer, pdfPad) {
   }
   await mkdir(uit, { recursive: true });
 
-  const data = new Uint8Array(await readFile(join(wortel, "public", pdfPad.replace(/^\//, ""))));
+  // De PDF mag in /public staan, of ergens anders online (R2, Internet Archive).
+  // Grote nummers horen niet in de repo: Git stopt rond 100 MB en het CMS al
+  // veel eerder. Zet ze op R2 en vul hier het volledige adres in.
+  let data;
+  if (/^https?:\/\//.test(pdfPad)) {
+    const antwoord = await fetch(pdfPad);
+    if (!antwoord.ok) {
+      console.warn(`nummer ${nummer}: ${pdfPad} gaf ${antwoord.status}, overgeslagen`);
+      return;
+    }
+    data = new Uint8Array(await antwoord.arrayBuffer());
+  } else {
+    const bron = join(wortel, "public", pdfPad.replace(/^\//, ""));
+    if (!(await bestaat(bron))) {
+      console.warn(`nummer ${nummer}: ${pdfPad} niet gevonden, overgeslagen`);
+      return;
+    }
+    data = new Uint8Array(await readFile(bron));
+  }
   const doc = await pdfjs.getDocument({ data, disableFontFace: false }).promise;
   const tekst = [];
 

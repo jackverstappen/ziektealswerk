@@ -14,6 +14,8 @@ export async function getStaticPaths() {
   const nummers = await getCollection("nummers");
   const paden = [];
   for (const n of nummers) {
+    // Een nummer zonder ingesproken artikelen krijgt geen luisterpagina.
+    if (!n.data.artikelen.length) continue;
     paden.push({ params: { code: String(n.data.nummer) }, props: { soort: "nummer", n } });
     n.data.artikelen.forEach((a, i) =>
       paden.push({

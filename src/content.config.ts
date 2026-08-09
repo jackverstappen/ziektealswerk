@@ -1,6 +1,17 @@
 import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
 
+// Lege velden komen uit het CMS soms als leeg object of lege tekst binnen.
+// Die moeten "niet ingevuld" betekenen, geen bouwfout.
+const getal = z.preprocess(
+  (v) => (v === "" || v === null || (typeof v === "object" && v !== null) ? undefined : v),
+  z.coerce.number().optional()
+);
+const tekst = z.preprocess(
+  (v) => (v === null || (typeof v === "object" && v !== null) ? undefined : v),
+  z.string().optional()
+);
+
 // Eén nummer = één bestand in src/content/nummers/.
 // De PDF en de artikelen staan erin; de pagina-afbeeldingen worden bij het
 // bouwen automatisch uit de PDF gehaald (scripts/render-pdf.mjs).
@@ -9,7 +20,7 @@ const nummers = defineCollection({
   schema: z.object({
     nummer: z.number(),
     titel: z.string(),
-    ondertitel: z.string().optional(),
+    ondertitel: tekst,
     jaar: z.number(),
     paginas: z.number(),
     status: z.enum(["Nieuw", "Te bestellen", "Uitverkocht in print", "In de maak"]),
@@ -21,12 +32,12 @@ const nummers = defineCollection({
         n: z.string(),                  // "01" — ligt vast, staat in gedrukte QR-codes
         titel: z.string(),
         auteur: z.string(),
-        lezer: z.string().optional(),
+        lezer: tekst,
         samenvatting: z.string(),
-        audio: z.string().optional(),   // volledige URL naar de mp3 (Internet Archive of R2)
-        duur: z.number().optional(),    // seconden
-        bytes: z.number().optional(),   // bestandsgrootte, voor de podcastfeed
-        transcript: z.string().optional()
+        audio: tekst,                   // volledige URL naar het audiobestand
+        duur: getal,                    // seconden
+        bytes: getal,                   // bestandsgrootte, voor de podcastfeed
+        transcript: tekst
       })
     ).default([])
   })

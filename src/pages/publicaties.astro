@@ -33,8 +33,12 @@ const nummers = (await getCollection("nummers")).sort((a, b) => a.data.nummer - 
               <td><span class="tag tag-outline" style="border-radius: 0">{n.data.status}</span></td>
               <td style="text-align: right; white-space: nowrap">
                 <a href={`/lezen/${n.data.nummer}`} style="font-family: var(--font-heading); letter-spacing: 0.08em; text-transform: uppercase">Lees online</a>
-                <span style="opacity: 0.4">·</span>
-                <a href={`/luister/${n.data.nummer}`} style="font-family: var(--font-heading); letter-spacing: 0.08em; text-transform: uppercase">Luister</a>
+                {n.data.artikelen.length > 0 && (
+                  <>
+                    <span style="opacity: 0.4">·</span>
+                    <a href={`/luister/${n.data.nummer}`} style="font-family: var(--font-heading); letter-spacing: 0.08em; text-transform: uppercase">Luister</a>
+                  </>
+                )}
                 <span style="opacity: 0.4">·</span>
                 <a href={n.data.pdf} download style="font-family: var(--font-heading); letter-spacing: 0.08em; text-transform: uppercase">PDF</a>
               </td>
@@ -45,6 +49,9 @@ const nummers = (await getCollection("nummers")).sort((a, b) => a.data.nummer - 
     </div>
 
     <h2 style="font-size: 34px; margin: 46px 0 16px">Losse artikelen</h2>
+    {nummers.every((n) => n.data.artikelen.length === 0) ? (
+      <p style="font-size: 16px; margin: 0">Van deze nummers zijn nog geen losse artikelen ontsloten.</p>
+    ) : (
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: var(--color-divider); border: 1px solid var(--color-divider)">
       {nummers.flatMap((n) =>
         n.data.artikelen.map((a) => (
@@ -62,6 +69,7 @@ const nummers = (await getCollection("nummers")).sort((a, b) => a.data.nummer - 
         ))
       )}
     </div>
+    )}
 
     <p style="margin-top: 40px; font-size: 17px">
       Vragen over bestellen of rechten? <a href="/#contact">Neem contact op</a>.

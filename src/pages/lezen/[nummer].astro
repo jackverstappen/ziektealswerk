@@ -36,7 +36,7 @@ const paginas = Array.from({ length: n.paginas }, (_, i) => i + 1);
       <span data-teller style="font-size: 14px; font-variant-numeric: tabular-nums">1 van {n.paginas}</span>
       <button class="btn btn-secondary btn-icon" data-volgende aria-label="Volgende pagina" style="border-radius: 0">›</button>
       <a class="btn btn-ghost" href={n.pdf} download style="margin-left: auto">PDF downloaden</a>
-      <a class="btn btn-ghost" href={`/luister/${n.nummer}`}>Beluisteren</a>
+      {n.artikelen.length > 0 && <a class="btn btn-ghost" href={`/luister/${n.nummer}`}>Beluisteren</a>}
     </div>
 
     <div style="flex: 1; display: flex; min-height: 0">
