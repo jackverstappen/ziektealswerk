@@ -13,7 +13,9 @@ export function start(root) {
   const sleutel = `zw-lezen-${nummer}`;
 
   const src = (p) => `/pagina/${nummer}/p${String(p).padStart(2, "0")}.jpg`;
-  const smal = () => window.innerWidth < 820;
+  // Een spread past zodra het scherm breder is dan hoog en er genoeg breedte is
+  // — dus ook op een telefoon die je kantelt. Anders één pagina tegelijk.
+  const smal = () => !(window.innerWidth >= 820 || (window.innerWidth > window.innerHeight && window.innerWidth >= 640));
   let pagina = Math.min(totaal, Math.max(1, Number(localStorage.getItem(sleutel)) || 1));
 
   const links = () => (smal() || pagina === 1 ? pagina : pagina % 2 === 0 ? pagina : pagina - 1);
@@ -33,7 +35,9 @@ export function start(root) {
   function kader(p, metTekst) {
     const fig = document.createElement("figure");
     fig.className = "blueprint";
-    fig.style.cssText = "margin:0;padding:0;border-radius:0;background:#fff;position:relative;width:min(560px,92vw)";
+    fig.style.cssText =
+      "margin:0;padding:0;border-radius:0;background:#fff;position:relative;" +
+      (smal() ? "width:min(560px,94vw)" : "width:min(560px,44vw);max-height:calc(100dvh - 130px)");
     fig.innerHTML = '<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>';
     const doos = document.createElement("div");
     doos.style.position = "relative";
@@ -98,6 +102,8 @@ export function start(root) {
     clearTimeout(t);
     t = setTimeout(teken, 200);
   });
+  // Kantelen van het toestel wisselt tussen één pagina en een spread.
+  window.addEventListener("orientationchange", () => setTimeout(teken, 300));
 
   const stijl = document.createElement("style");
   stijl.textContent =

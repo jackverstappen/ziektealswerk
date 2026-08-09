@@ -21,6 +21,13 @@ const tekst = JSON.parse(
   await readFile(`./public/pagina/${n.nummer}/tekst.json`, "utf8").catch(() => "[]")
 );
 const paginas = Array.from({ length: n.paginas }, (_, i) => i + 1);
+
+// De echte afmetingen per pagina, zodat de miniaturen niet vervormen.
+// Valt terug op A4 als de tekstlaag er nog niet is.
+const maat = (p) => {
+  const t = tekst.find((x) => x.pagina === p);
+  return { w: t?.breedte ?? 1400, h: t?.hoogte ?? 1980 };
+};
 ---
 
 <Basis titel={`Nummer ${n.nummer} online lezen`}>
@@ -40,11 +47,12 @@ const paginas = Array.from({ length: n.paginas }, (_, i) => i + 1);
     </div>
 
     <div style="flex: 1; display: flex; min-height: 0">
-      <aside data-rail style="flex: 0 0 clamp(112px, 20vw, 176px); border-right: 1px solid var(--color-divider); overflow-y: auto; padding: 12px; background: var(--color-surface)">
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 8px">
+      <aside data-rail style="flex: 0 0 clamp(112px, 20vw, 176px); border-right: 1px solid var(--color-divider); overflow-y: auto; padding: 12px; background: var(--color-surface)">        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 8px">
           {paginas.map((p) => (
             <button data-ga={p} style="padding: 0; border: 1px solid var(--color-divider); background: #fff; cursor: pointer; display: block">
-              <img src={`/pagina/${n.nummer}/p${String(p).padStart(2, "0")}.jpg`} alt="" loading="lazy" width="140" height="198" style="width: 100%; display: block" />
+              <img src={`/pagina/${n.nummer}/p${String(p).padStart(2, "0")}.jpg`} alt="" loading="lazy"
+                width={maat(p).w} height={maat(p).h}
+                style="width: 100%; height: auto; display: block" />
             </button>
           ))}
         </div>
@@ -62,4 +70,12 @@ const paginas = Array.from({ length: n.paginas }, (_, i) => i + 1);
     import { start } from "../../scripts/lezer.js";
     start(document.getElementById("lezer"));
   </script>
+
+  <style>
+    /* Op een telefoon is de miniaturenkolom te smal om iets aan te hebben;
+       bladeren gaat daar met vegen en de knoppen. */
+    @media (max-width: 819px) {
+      [data-rail] { display: none; }
+    }
+  </style>
 </Basis>
