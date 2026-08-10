@@ -57,7 +57,9 @@ collections:
     label_singular: "Bijeenkomst"
     folder: "src/content/events"
     create: true
+    identifier_field: titel
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{datum | date('YYYY-MM-DD')}} — {{titel}}"    
     sortable_fields: [datum]
     fields:
       - { name: titel, label: "Titel", widget: string }
