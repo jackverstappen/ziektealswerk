@@ -40,7 +40,7 @@ const ingesproken = nummers.some((n) => n.data.artikelen.some((a) => a.audio));
               <span style="display: block; font-family: var(--font-heading); font-size: 26px; line-height: 1.05">{n.data.titel}</span>
               <span style="display: block; font-size: 13.5px; color: color-mix(in srgb, var(--color-text) 68%, transparent)">
                 {n.data.jaar} · {n.data.paginas} p.
-                {n.data.artikelen.length > 0 && ` · ${n.data.artikelen.length} artikelen`}
+                {n.data.artikelen.length > 0 && ` · ${n.data.artikelen.length} artikel(en)`}
               </span>
             </span>
             <span class="tag tag-outline" style="border-radius: 0; flex: 0 0 auto">{n.data.status}</span>
@@ -60,7 +60,7 @@ const ingesproken = nummers.some((n) => n.data.artikelen.some((a) => a.audio));
               <div style="border-top: 1px solid var(--color-divider)">
                 {n.data.artikelen.map((a) => (
                   <article style="display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; padding: 14px 2px; border-bottom: 1px solid var(--color-divider)">
-                    <span style="flex: 0 0 42px; font-family: var(--font-heading); font-size: 15px; color: var(--color-accent-700)">{n.data.nummer}-{a.n}</span>
+                    <span style="flex: 0 0 42px; font-family: var(--font-heading); font-size: 15px; color: var(--color-accent-700)">{String(n.data.nummer).padStart(2, "0")}-{a.n}</span>
                     <div style="flex: 2 1 220px; min-width: 0">
                       <div style="font-family: var(--font-heading); font-size: 21px; line-height: 1.1">
                         {a.audio
