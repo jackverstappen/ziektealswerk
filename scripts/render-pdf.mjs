@@ -78,7 +78,7 @@ async function rendered(nummer, pdfPad) {
   }
   const doc = await pdfjs.getDocument({
     data,
-    disableFontFace: false,
+    disableFontFace: true,
     useSystemFonts: true,
     standardFontDataUrl: standaardLetters
   }).promise;
