@@ -1,6 +1,6 @@
 ---
 import Basis from "../layouts/Basis.astro";
-import { getCollection, getEntry, render } from "astro:content";
+import { getCollection } from "astro:content";
 
 const nummers = (await getCollection("nummers")).sort((a, b) => b.data.nummer - a.data.nummer);
 const nieuws = (await getCollection("nieuws")).sort((a, b) => b.data.datum - a.data.datum).slice(0, 3);
@@ -26,22 +26,16 @@ const maand = (d) =>
 <Basis titel="Een werkgroep en een publicatie">
   <section id="top" style="padding: clamp(36px, 8vw, 64px) clamp(16px, 4vw, 32px) 40px; border-bottom: 1px solid var(--color-text)">
     <div style="display: flex; justify-content: space-between; gap: 24px; font-family: var(--font-heading); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: 28px">
-      <span>Een werkgroep en een publicatie</span>
+      <span>COLLECTIEF ZIEKTE <span style="color: var(--color-accent)">⇔</span> WERK: WIE WE ZIJN EN WAT WE DOEN</span>
       <span>Uitgesproken als "ziekte als werk"</span>
     </div>
     <h1 style="font-size: clamp(56px, 12vw, 184px); line-height: 0.86; letter-spacing: -0.03em; text-transform: lowercase; margin: 0 0 28px; max-width: 15ch">
       ziekte <span style="color: var(--color-accent)">⇔</span> werk
     </h1>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; align-items: end; border-top: 1px solid var(--color-divider); padding-top: 20px">
-      <p style="font-size: 21px; line-height: 1.35; margin: 0; max-width: 34ch; text-wrap: pretty">
-        Wie ziek is, wordt vaak "arbeidsongeschikt" genoemd. Maar herstellen is werk.
-        Wachten is werk. Formulieren invullen is werk.
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(1fr, 1fr)); gap: 24px; align-items: end; border-top: 1px solid var(--color-divider); padding-top: 20px">
+      <p style="font-size: 21px; line-height: 1.35; margin: 0; text-wrap: pretty">
+        Leven met ziekte is hard werken. Het vraagt vaardigheden, kost moeite en veel tijd. Dat werk doe je zonder voorbereiding, erkenning en in onzichtbaarheid. Ziekte <span style="color: var(--color-accent)">⇔</span> Werk stelt de vraag: wat levert het op als we leven met ziekte bekijken door de lens van werk? Wat kunnen we dan zeggen over de vaardigheden die je ontwikkelt, hoe dat werk er uitziet en wat hij brijdraagt aan een groter context?
       </p>
-      <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end">
-        <a class="btn btn-primary blueprint" href="#publicaties" style="border-radius: 0">
-          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>Lees de publicatie
-        </a>
-      </div>
     </div>
   </section>
 
@@ -49,39 +43,52 @@ const maand = (d) =>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); align-items: stretch">
       <div style="padding: clamp(28px, 6vw, 44px) clamp(16px, 4vw, 32px); border-right: 1px solid var(--color-text)">
         <h6 style="color: var(--color-accent-700); margin: 0 0 24px">01 — Over ons</h6>
-        <h2 style="font-size: clamp(32px, 4vw, 54px); line-height: 1.02; max-width: 18ch; margin: 0 0 24px">
-          {over.titel}
-        </h2>
-        <div class="kolommen" style="font-size: 15.5px; line-height: 1.6">
-          <OverTekst />
-        </div>
-        {over.link_tekst && (
-          <p style="margin: 20px 0 0">
-            <a href="#contact" style="font-family: var(--font-heading); font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase">{over.link_tekst}</a>
-          </p>
-        )}
-        {over.cijfers.length > 0 && (
-          <div style={`display: grid; grid-template-columns: repeat(${over.cijfers.length}, 1fr); gap: 1px; margin-top: 36px; background: var(--color-divider); border: 1px solid var(--color-divider)`}>
-            {over.cijfers.map((c) => (
-              <div style="background: var(--color-bg); padding: 16px">
-                <div style="font-family: var(--font-heading); font-size: 40px; line-height: 1">{c.getal}</div>
-                <div style="font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-accent-700)">{c.label}</div>
-              </div>
-            ))}
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 26px; font-size: 15.5px; line-height: 1.6">
+          <div>
+            <p>
+              We leven in een maatschappij waarin het doen van betaald werk boven al het andere wordt gewaardeerd en status geeft. Wie ziek is en niet deelneemt aan de arbeidsmarkt, mist die waardering. Maar ziek zijn is keihard werken. Veel van dat werk is onzichtbaar en wordt helemaal niet erkend als werk. Je kunt er ook niet voor leren. Het is een kwestie van vallen en opstaan en gaandeweg leren omgaan met je ziekte en de impact daarvan op het dagelijkse leven. 
+            </p>
+            <p>
+              Dat maakt mensen met een chronische ziekte door de wol geverfde ervaringsdeskundigen. Zij worden dan ook voortdurend benaderd door onderzoekers die hen in zogeheten participatietrajecten het hemd van het lijf vragen. Maar in wat er vervolgens met de verzamelde data gebeurt, worden zij binnen het hiërarchische systeem van de zorg niet altijd gekend. 
+            </p>
+            <p>
+              Als collectief Ziekte <span style="color: var(--color-accent)">⇔</span> Werk zijn we in co-creatieve werksessies op zoek gegaan naar een manier om  deze kennis te delen op onze eigen manier. Ons onderzoek richt zich op het zichtbaar maken van het onzichtbare werk van leven met ziekte, zonder dat een ander zich deze persoonlijke verhalen en gegevens toe-eigent en we het eigenaarschap verliezen. Hoe we dat hebben aangepakt, hoe we met elkaar hebben samengewerkt en hoe we onze eigen werkvoorwaarden hebben bepaald, doen we hier ook uit de doeken. In dit verhaal zijn we allemaal onderwerp, mede auteur, schrijver, maker en onderzoeker tegelijk.
+            </p>
           </div>
-        )}
+        </div>
+        <h2 style="font-size: clamp(32px, 4vw, 54px); line-height: 1.02; max-width: 18ch; margin: 0 0 24px">
+          Wie we zijn
+        </h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 26px; font-size: 15.5px; line-height: 1.6">
+          <div>
+            <p>
+              Wij zijn Peter van den Berg, Hermine ‘t Hart, <a href="https://philippinehoegen-com.vercel.app/">Philippine Hoegen</a>, Sarah Kaushik, Kalina Schneider, Bart Schut, Anna Spiliotopoulou, Severien Suthoff, Truus Teunissen, Wim de Wit, Nika van Woenzel en Dayenne Zwaagman.
+            </p>
+            <p>
+              We leerden elkaar kennen in 2023, toen Philippine als kunstenaar en onderzoeker met een project over werk (<a href="https://www.hku.nl/het-werk-van-hku/verhalen/wat-gebeurt-er-als-we-onzichtbare-arbeid-expliciet-maken">Performing Working</a> genaamd) aanklopte bij het UMCU met de vraag: mensen die met ziekte leven zijn vaak arbeidsongeschikt verklaard, maar ondertussen werken ze heel hard – aan hun eigen ziekteproces, de bureaucratie daarom heen, pijn en energiemanagement, noem maar op, en daarnaast doen veel mensen mee aan patiënt participatieve onderzoeken, vrijwilligerswerk enz… is dat niet gewoon werk? 
+            </p>
+            <p>
+              Dat sprak een aantal mensen heel erg aan. We begonnen met elkaar te werken, maakten met anderen samen een publicatie genaamd <i>Een Informele Handleiding voor Ziekte: Vaardigheden, tips & tricks, voor en door mensen die leven met ziekte</i>. Toen waren we nog lang niet klaar met het onderwerp, en werd het idee van 3 tijdschriften geboren. Inmiddels noemen we ons een collectief, met dezelfde naam als deze tijdschriften serie: Ziekte ⬄ Werk.
+            </p>
+            <p>
+              Alle deelnemers hebben dubbelrollen: we zijn arts én patiënt, kunstenaar én mantelzorger of onderzoeker én chronisch ziek. Onze samenwerking is nadrukkelijk transdisciplinair en co-creatief: met instrumenten uit de kunstpraktijk is iedereen aan het onderzoeken en creëren. 
+            </p>
+          </div>
+        </div>
       </div>
 
       <figure class="blueprint" style="position: relative; margin: 0; border: 0; min-height: min(520px, 78vw)">
         <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <!--- 
         <div class="duotone" style="position: absolute; inset: 0">
-          <img src={over.foto} alt={over.fotobijschrift ?? ""} onerror="this.style.display='none'" style="width: 100%; height: 100%; object-fit: cover" />
+         -->
+        <div style="position: absolute; inset: 0">
+          <!-- Vervang deze foto via /admin → media, of zet er een eigen bestand neer. -->
+          <img src="/media/landingpage-cover.jpg" alt="Reinventing Participation - Collage door collectief Ziekte ⇔ Werk, 2026" onerror="this.style.display='none'" style="width: 100%; height: 100%; object-fit: cover" />
         </div>
-        {over.fotobijschrift && (
-          <figcaption style="position: absolute; left: 14px; bottom: 12px; z-index: 3; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-bg); mix-blend-mode: difference">
-            {over.fotobijschrift}
-          </figcaption>
-        )}
+        <figcaption style="position: absolute; left: 14px; bottom: 12px; z-index: 3; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-bg); mix-blend-mode: difference">
+          Fig. 01 — Reinventing Participation - Collage door collectief Ziekte <span style="color: var(--color-accent)">⇔</span> Werk, 2026
+        </figcaption> 
       </figure>
     </div>
   </section>
@@ -90,7 +97,7 @@ const maand = (d) =>
     <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; padding: 0 clamp(16px, 4vw, 32px) 24px; flex-wrap: wrap">
       <div>
         <h6 style="color: var(--color-accent-700); margin: 0 0 12px">02 — Publicaties</h6>
-        <h2 style="font-size: clamp(30px, 4vw, 50px); line-height: 1.02; margin: 0; max-width: 22ch">De publicatie, nummer voor nummer</h2>
+        <h2 style="font-size: clamp(30px, 4vw, 50px); line-height: 1.02; margin: 0; max-width: 22ch">Onze publicaties zover</h2>
       </div>
       <div style="display: flex; align-items: center; gap: 14px">
         <span style="font-size: 12.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-700)">Sleep of scroll →</span>
@@ -126,40 +133,34 @@ const maand = (d) =>
       ))}
 
       <article style="flex: 0 0 min(260px, 70vw); display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: 22px; border: 1px dashed var(--color-divider)">
-        <div style="font-family: var(--font-heading); font-size: 26px; line-height: 1.05">Nummer {nummers.length + 1} is in de maak</div>
+        <div style="font-family: var(--font-heading); font-size: 26px; line-height: 1.05">Tijdschriften serie “Ziekte ⇔ Werk”</div>
         <p style="font-size: 14.5px; line-height: 1.5; margin: 0; color: color-mix(in srgb, var(--color-text) 70%, transparent)">
-          Thema: wachtkamers. Stuur ons een tekst, tekening of stem.
+           Binnenkort hier te vinden.
         </p>
-        <a href="#contact" style="font-family: var(--font-heading); font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase">Doe een voorstel →</a>
       </article>
     </div>
 
     <div style="display: flex; gap: 28px; flex-wrap: wrap; padding: 0 clamp(16px, 4vw, 32px)">
       <a href="/publicaties" style="font-family: var(--font-heading); font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase">Alle publicaties en losse teksten →</a>
-      {ingesproken && (
-        <a href="/publicaties" style="font-family: var(--font-heading); font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase">Elk artikel is ook ingesproken — luister mee →</a>
-      )}
+      <a href="/luister/1" style="font-family: var(--font-heading); font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase">Elk artikel is ook ingesproken — luister mee →</a>
     </div>
   </section>
 
-  <section id="nieuws" style="border-bottom: 1px solid var(--color-text)">
+  <section id="varia" style="border-bottom: 1px solid var(--color-text)">
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr))">
       <div style="padding: clamp(28px, 6vw, 44px) clamp(16px, 4vw, 32px); border-right: 1px solid var(--color-text)">
         <h6 style="color: var(--color-accent-700); margin: 0 0 12px">03 — Varia</h6>
         <h2 style="font-size: clamp(30px, 4vw, 50px); line-height: 1.02; margin: 0 0 26px">Berichten en aankondigingen</h2>
         <div style="display: grid; gap: 1px; background: var(--color-divider); border: 1px solid var(--color-divider)">
-          {nieuws.map((b) => {
-            const Inhoud = tekst[b.id];
-            return (
-              <article style="background: var(--color-bg); padding: 20px; display: grid; grid-template-columns: minmax(78px, auto) minmax(0, 1fr); gap: 14px">
-                <div style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-700)">{maand(b.data.datum)}</div>
-                <div>
-                  <h3 style="font-size: 24px; line-height: 1.08; margin: 0 0 6px">{b.data.titel}</h3>
-                  <div style="font-size: 14.5px; line-height: 1.55; color: color-mix(in srgb, var(--color-text) 76%, transparent)"><Inhoud /></div>
-                </div>
-              </article>
-            );
-          })}
+          {nieuws.map((b) => (
+            <article style="background: var(--color-bg); padding: 20px; display: grid; grid-template-columns: minmax(78px, auto) minmax(0, 1fr); gap: 14px">
+              <div style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-700)">{maand(b.data.datum)}</div>
+              <div>
+                <h3 style="font-size: 24px; line-height: 1.08; margin: 0 0 6px">{b.data.titel}</h3>
+                <p style="font-size: 14.5px; line-height: 1.55; margin: 0; color: color-mix(in srgb, var(--color-text) 76%, transparent)" set:html={b.rendered?.html ?? ""} />
+              </div>
+            </article>
+          ))}
         </div>
       </div>
     </div>
@@ -169,22 +170,25 @@ const maand = (d) =>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px">
       <div>
         <h6 style="color: var(--color-accent-300); margin: 0 0 14px">04 — Contact</h6>
-        <h2 style="font-size: clamp(34px, 5vw, 68px); line-height: 0.98; margin: 0 0 20px; max-width: 14ch; color: var(--color-bg)">{contact.titel}</h2>
-        <div class="contacttekst" style="font-size: 17px; line-height: 1.5; max-width: 40ch; color: color-mix(in srgb, #fff 82%, transparent)">
-          <ContactTekst />
-        </div>
+        <h2 style="font-size: clamp(34px, 5vw, 68px); line-height: 0.98; margin: 0 0 20px; max-width: 14ch; color: var(--color-bg)">Contacteer ons</h2>
+        <p style="margin-top: 26px">
+          <a href="mailto:hallo@ziektealswerk.nl" style="font-family: var(--font-heading); font-size: clamp(24px, 3vw, 38px); color: var(--color-bg); text-decoration: none; border-bottom: 1px solid var(--color-accent-400)">
+            hallo@ziektealswerk.nl
+          </a>
+        </p>
       </div>
 
+      <!--
+      
       <div class="blueprint" style="padding: 24px; border-color: color-mix(in srgb, #fff 34%, transparent); border-radius: 0">
         <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
-        {/*
-          Een statische site kan zelf geen mail versturen. Vul in /admin → Vaste
-          teksten → Contact het adres van een formulierdienst in (Formspree,
-          Web3Forms). Laat je het leeg, dan verdwijnt het formulier en blijft
-          alleen het e-mailadres staan — dat gaat nooit stuk.
-        */}
-        {contact.formulier ? (
-        <form action={contact.formulier} method="POST" style="display: grid; gap: 14px">
+        {
+        /*
+          Een statische site kan zelf geen mail versturen. Deze form post naar een
+          externe dienst (Formspree, Web3Forms, Netlify Forms). Vul het adres in
+          onder `action`. Werkt dat niet, of wil je geen derde partij: haal de form
+          weg en laat het e-mailadres hiernaast staan — dat gaat nooit stuk.
+        <form action="https://formspree.io/f/VUL-DIT-IN" method="POST" style="display: grid; gap: 14px">
           <div class="field">
             <label style="color: color-mix(in srgb, #fff 75%, transparent)" for="naam">Naam</label>
             <input class="input" id="naam" name="naam" required style="border-radius: 0; background: transparent; color: #fff; border-color: color-mix(in srgb, #fff 34%, transparent)" />
@@ -199,37 +203,16 @@ const maand = (d) =>
           </div>
           <button class="btn btn-primary" type="submit" style="border-radius: 0; background: var(--color-bg); color: var(--color-accent-900)">Versturen</button>
         </form>
-        ) : (
-          <p style="margin: 0; font-size: 16px; line-height: 1.55; color: color-mix(in srgb, #fff 82%, transparent)">
-            Schrijf ons gerust een mail — we lezen alles.
-          </p>
-        )}
+        */}
       </div>
+      
+       -->
     </div>
   </section>
 
-  <style>
-    /* De tekst van "Over ons" komt als één markdown-body binnen en wordt
-       hier over twee kolommen verdeeld — geen twee losse velden meer. */
-    .kolommen { columns: 2; column-gap: 26px; }
-    .kolommen > :first-child { margin-top: 0; }
-    .kolommen p { break-inside: avoid; margin: 0 0 1em; }
-    @media (max-width: 720px) { .kolommen { columns: 1; } }
-
-    .contacttekst > :first-child { margin-top: 0; }
-    .contacttekst > :last-child { margin-bottom: 0; }
-    /* Een e-mailadres als losse alinea wordt vanzelf het grote adres. */
-    .contacttekst a { color: var(--color-bg); text-decoration: none; border-bottom: 1px solid var(--color-accent-400); }
-    .contacttekst p:has(> a:only-child) {
-      font-family: var(--font-heading);
-      font-size: clamp(24px, 3vw, 38px);
-      line-height: 1.1;
-      margin-top: 26px;
-    }
-  </style>
-
   <script is:inline>
-    // De publicatiestrip: slepen met de muis, en de pijltjesknoppen ernaast.  (() => {
+    // De publicatiestrip: slepen met de muis, en de pijltjesknoppen ernaast.
+    (() => {
       const strip = document.getElementById("strip");
       if (!strip) return;
       document.querySelectorAll("[data-strip]").forEach((b) =>

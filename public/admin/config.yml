@@ -81,3 +81,24 @@ collections:
       - { name: soort, label: "Soort", widget: select, options: ["Aankondiging", "Open oproep", "Pers"] }
       - { name: bron, label: "Bron (bij pers)", widget: string, required: false }
       - { name: body, label: "Tekst", widget: markdown }
+
+# Vaste teksten op de startpagina. Geen lijst, maar twee losse formulieren.
+  - name: vaste_teksten
+    label: "Vaste teksten"
+    files:
+      - name: over
+        label: "Over ons"
+        file: "src/content/pagina/over.md"
+        fields:
+          - { name: titel, label: "Kop", widget: string, hint: "De grote vraag boven de tekst." }
+          - { name: body, label: "Tekst", widget: markdown, hint: "Wordt over twee kolommen verdeeld op een breed scherm." }
+          - { name: foto, label: "Foto", widget: image, required: false, media_folder: "/public/media", public_folder: "/media" }
+          - { name: fotobijschrift, label: "Bijschrift bij de foto", widget: string, required: false }
+
+      - name: contact
+        label: "Contact"
+        file: "src/content/pagina/contact.md"
+        fields:
+          - { name: titel, label: "Kop", widget: string }
+          - { name: body, label: "Tekst", widget: markdown, hint: "Zet het e-mailadres als losse alinea met een link erop — dan wordt het groot getoond." }
+          - { name: formulier, label: "Adres van het contactformulier", widget: string, required: false, hint: "Van Formspree of Web3Forms. Leeg laten = geen formulier, alleen de tekst." }

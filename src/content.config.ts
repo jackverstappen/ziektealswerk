@@ -65,4 +65,17 @@ const nieuws = defineCollection({
   })
 });
 
-export const collections = { nummers, events, nieuws };
+// Vaste stukken tekst op de startpagina, elk één bestand dat via /admin
+// bewerkt wordt: src/content/pagina/over.md en contact.md.
+// De lopende tekst staat in de body van het bestand, niet in een veld.
+const pagina = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/pagina" }),
+  schema: z.object({
+    titel: z.string(),
+    foto: tekst,
+    fotobijschrift: tekst,
+    formulier: tekst
+  })
+});
+
+export const collections = { nummers, events, nieuws, pagina };
