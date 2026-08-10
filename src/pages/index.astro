@@ -55,21 +55,6 @@ const maand = (d) =>
         <div class="kolommen" style="font-size: 15.5px; line-height: 1.6">
           <OverTekst />
         </div>
-        {over.link_tekst && (
-          <p style="margin: 20px 0 0">
-            <a href="#contact" style="font-family: var(--font-heading); font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase">{over.link_tekst}</a>
-          </p>
-        )}
-        {over.cijfers.length > 0 && (
-          <div style={`display: grid; grid-template-columns: repeat(${over.cijfers.length}, 1fr); gap: 1px; margin-top: 36px; background: var(--color-divider); border: 1px solid var(--color-divider)`}>
-            {over.cijfers.map((c) => (
-              <div style="background: var(--color-bg); padding: 16px">
-                <div style="font-family: var(--font-heading); font-size: 40px; line-height: 1">{c.getal}</div>
-                <div style="font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-accent-700)">{c.label}</div>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
 
       <figure class="blueprint" style="position: relative; margin: 0; border: 0; min-height: min(520px, 78vw)">
