@@ -1,8 +1,9 @@
 ---
-titel: "Wat we doen en wie we zijn"  
-foto: "/media/werkgroep.jpg"
-fotobijschrift: "Fig. 01 — bijeenkomst van de werkgroep"
+titel: Wat we doen en wie we zijn
+foto: /media/landingpage-cover.jpg
+fotobijschrift: Fig. 01 — bijeenkomst van de werkgroep
 ---
+
 Wij zijn een groep mensen die elkaar vond rondom één vraag. Mensen die met een
 ziekte leven worden vaak "ongeschikt voor werk" verklaard, terwijl ze hard
 werken aan hun herstel, worstelen met de bijbehorende bureaucratie, en soms
@@ -33,4 +34,4 @@ We leerden elkaar kennen in 2023, toen Philippine als kunstenaar en onderzoeker 
 
 Dat sprak een aantal mensen heel erg aan. We begonnen met elkaar te werken, maakten met anderen samen een publicatie genaamd <i>Een Informele Handleiding voor Ziekte: Vaardigheden, tips & tricks, voor en door mensen die leven met ziekte</i>. Toen waren we nog lang niet klaar met het onderwerp, en werd het idee van 3 tijdschriften geboren. Inmiddels noemen we ons een collectief, met dezelfde naam als deze tijdschriften serie: Ziekte ⬄ Werk.
 
-Alle deelnemers hebben dubbelrollen: we zijn arts én patiënt, kunstenaar én mantelzorger of onderzoeker én chronisch ziek. Onze samenwerking is nadrukkelijk transdisciplinair en co-creatief: met instrumenten uit de kunstpraktijk is iedereen aan het onderzoeken en creëren. 
+Alle deelnemers hebben dubbelrollen: we zijn arts én patiënt, kunstenaar én mantelzorger of onderzoeker én chronisch ziek. Onze samenwerking is nadrukkelijk transdisciplinair en co-creatief: met instrumenten uit de kunstpraktijk is iedereen aan het onderzoeken en creëren.
