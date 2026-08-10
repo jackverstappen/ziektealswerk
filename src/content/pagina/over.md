@@ -1,5 +1,5 @@
 ---
-titel: Wat we doen en wie we zijn
+titel: Wat we doen
 foto: /media/landingpage-cover.jpg
 fotobijschrift: Fig. 01 — Reinventing Participation - Collage door collectief Ziekte ⬄ Werk, 2026
 ---
