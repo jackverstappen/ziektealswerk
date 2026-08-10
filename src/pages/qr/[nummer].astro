@@ -1,0 +1,65 @@
+---
+import Basis from "../../layouts/Basis.astro";
+import { getCollection } from "astro:content";
+import QRCode from "qrcode";
+
+/**
+ * Het QR-vel voor de opmaak: /qr/1
+ * Werkblad voor de redactie, geen pagina voor bezoekers — hij staat nergens
+ * in de navigatie. Elke code is een SVG en dus verliesvrij te vergroten.
+ */
+export async function getStaticPaths() {
+  const nummers = await getCollection("nummers");
+  return nummers
+    .filter((n) => n.data.artikelen.length > 0)
+    .map((n) => ({ params: { nummer: String(n.data.nummer) }, props: { n } }));
+}
+
+const { n } = Astro.props;
+const basis = Astro.site.href.replace(/\/$/, "");
+
+const codes = await Promise.all(
+  n.data.artikelen.map(async (a) => {
+    const url = `${basis}/luister/${n.data.nummer}-${a.n}`;
+    return {
+      ...a,
+      url,
+      svg: await QRCode.toString(url, {
+        type: "svg",
+        errorCorrectionLevel: "Q",
+        margin: 4,
+        color: { dark: "#1d2d3d", light: "#ffffff" }
+      })
+    };
+  })
+);
+---
+
+<Basis titel={`QR-codes nummer ${n.data.nummer}`}>
+  <section style="padding: clamp(28px, 6vw, 44px) clamp(16px, 4vw, 32px) 20px; border-bottom: 1px solid var(--color-text)">
+    <h6 style="color: var(--color-accent-700); margin: 0 0 12px">Werkblad voor de opmaak</h6>
+    <h1 style="font-size: clamp(30px, 4vw, 52px); line-height: 1.02; margin: 0 0 16px">QR-codes bij nummer {n.data.nummer}</h1>
+    <p style="font-size: 15px; max-width: 62ch; margin: 0">
+      Eén code per artikel, elk verwijzend naar de gesproken versie. Minimaal 20 × 20 mm
+      drukken, witruimte rondom laten staan, donker op licht. Zet de URL er klein onder
+      als terugval. Rechtsklik een code om hem als SVG op te slaan — verliesvrij te vergroten.
+    </p>
+  </section>
+
+  <section style="padding: 26px clamp(16px, 4vw, 32px) 56px">
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr)); gap: 22px">
+      {codes.map((c) => (
+        <figure class="blueprint" style="margin: 0; padding: 18px; border-radius: 0">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <div style="background: #fff" set:html={c.svg}></div>
+          <figcaption style="margin-top: 10px">
+            <div style="font-family: var(--font-heading); font-size: 18px; line-height: 1.1">{c.titel}</div>
+            <div style="font-size: 12px; word-break: break-all; color: color-mix(in srgb, var(--color-text) 68%, transparent)">
+              {c.url.replace("https://", "")}
+            </div>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </section>
+</Basis>
