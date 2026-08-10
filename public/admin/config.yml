@@ -1,8 +1,8 @@
 backend:
   name: github
-  repo: jackverstappen/ziektealswerk
+  repo: ZIEKTE-WERK/site          # pas aan naar de echte repo
   branch: main
-  base_url: https://sveltia-cms-auth.jack-verstappen.workers.dev   # de Sveltia-inlogworker op Cloudflare
+  base_url: https://ziekte-werk-auth.workers.dev   # de Sveltia-inlogworker op Cloudflare
 
 media_folder: "public/media"
 public_folder: "/media"
@@ -26,12 +26,14 @@ collections:
       - { name: status, label: "Status", widget: select, options: ["Nieuw", "Te bestellen", "Uitverkocht in print", "In de maak"] }
       - { name: verschenen, label: "Verschenen op", widget: datetime, time_format: false, picker_utc: false }
       - { name: omslag, label: "Omslag (afbeelding)", widget: image, media_folder: "/public/omslag", public_folder: "/omslag" }
-      - { name: pdf, label: "PDF van het nummer", widget: file, media_folder: "/public/pdf", public_folder: "/pdf", hint: "De pagina's worden hier automatisch uit gehaald. Niets extra's uploaden." }
+      - { name: pdf, label: "PDF van het nummer", widget: string, hint: "Volledig adres van de PDF op R2, bijvoorbeeld https://audio.ziekte-werk.nl/pdf/nummer-2.pdf — grote bestanden kunnen niet hier geüpload worden. De pagina's worden hier automatisch uit gehaald." }
       - name: artikelen
         label: "Artikelen"
         widget: list
+        required: false
         label_singular: "Artikel"
         summary: "{{fields.n}} — {{fields.titel}}"
+        hint: "Alleen invullen als er losse artikelen ontsloten worden. Leeg laten mag — dan krijgt dit nummer geen luisterpagina en geen QR-codes."
         fields:
           - { name: n, label: "Volgnummer", widget: string, pattern: ['^\d{2}$', "Twee cijfers, bijvoorbeeld 07"], hint: "Staat in de gedrukte QR-code. Nooit meer wijzigen." }
           - { name: titel, label: "Titel", widget: string }
