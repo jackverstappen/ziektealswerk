@@ -25,6 +25,13 @@ const bestaat = async (p) => access(p).then(() => true, () => false);
 // pdfjs draait hier zonder worker (Node), vandaar de legacy-build.
 const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
 
+// Waar pdfjs de standaardletters vindt. Zonder dit wordt elk teken uit een
+// niet-ingebed lettertype een vakje met een kruis.
+const standaardLetters = join(
+  dirname(fileURLToPath(import.meta.resolve("pdfjs-dist/legacy/build/pdf.mjs"))),
+  "../../standard_fonts/"
+);
+
 async function nummersUitContent() {
   const map = join(wortel, "src/content/nummers");
   const bestanden = (await readdir(map)).filter((f) => /\.mdx?$/.test(f));
@@ -69,7 +76,12 @@ async function rendered(nummer, pdfPad) {
     }
     data = new Uint8Array(await readFile(bron));
   }
-  const doc = await pdfjs.getDocument({ data, disableFontFace: false }).promise;
+  const doc = await pdfjs.getDocument({
+    data,
+    disableFontFace: false,
+    useSystemFonts: true,
+    standardFontDataUrl: standaardLetters
+  }).promise;
   const tekst = [];
 
   for (let p = 1; p <= doc.numPages; p++) {
