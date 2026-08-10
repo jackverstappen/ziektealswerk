@@ -69,7 +69,7 @@ const maand = (d) =>
     <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; padding: 0 clamp(16px, 4vw, 32px) 24px; flex-wrap: wrap">
       <div>
         <h6 style="color: var(--color-accent-700); margin: 0 0 12px">02 — Publicaties</h6>
-        <h2 style="font-size: clamp(30px, 4vw, 50px); line-height: 1.02; margin: 0; max-width: 22ch">De publicatie, nummer voor nummer</h2>
+        <h2 style="font-size: clamp(30px, 4vw, 50px); line-height: 1.02; margin: 0; max-width: 22ch">Onze publicaties zover</h2>
       </div>
       <div style="display: flex; align-items: center; gap: 14px">
         <span style="font-size: 12.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-700)">Sleep of scroll →</span>
@@ -105,16 +105,15 @@ const maand = (d) =>
       ))}
 
       <article style="flex: 0 0 min(260px, 70vw); display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: 22px; border: 1px dashed var(--color-divider)">
-        <div style="font-family: var(--font-heading); font-size: 26px; line-height: 1.05">Nummer {nummers.length + 1} is in de maak</div>
+        <div style="font-family: var(--font-heading); font-size: 26px; line-height: 1.05">Tijdschriften serie “Ziekte ⇔ Werk”</div>
         <p style="font-size: 14.5px; line-height: 1.5; margin: 0; color: color-mix(in srgb, var(--color-text) 70%, transparent)">
-          Thema: wachtkamers. Stuur ons een tekst, tekening of stem.
+          Binnenkort hier te vinden.
         </p>
-        <a href="#contact" style="font-family: var(--font-heading); font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase">Doe een voorstel →</a>
       </article>
     </div>
 
     <div style="display: flex; gap: 28px; flex-wrap: wrap; padding: 0 clamp(16px, 4vw, 32px)">
-      <a href="/publicaties" style="font-family: var(--font-heading); font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase">Alle publicaties en losse teksten →</a>
+      <a href="/publicaties" style="font-family: var(--font-heading); font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase">Alle publicaties →</a>
       {ingesproken && (
         <a href="/publicaties" style="font-family: var(--font-heading); font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase">Elk artikel is ook ingesproken — luister mee →</a>
       )}
@@ -154,6 +153,7 @@ const maand = (d) =>
         </div>
       </div>
 
+      <!--
       <div class="blueprint" style="padding: 24px; border-color: color-mix(in srgb, #fff 34%, transparent); border-radius: 0">
         <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
         {/*
@@ -185,6 +185,7 @@ const maand = (d) =>
         )}
       </div>
     </div>
+     -->
   </section>
 
   <style>
