@@ -2,7 +2,7 @@ backend:
   name: github
   repo: jackverstappen/ziektealswerk          # pas aan naar de echte repo
   branch: main
-  base_url: https://sveltia-cms-auth.ziektealswerk.workers.dev   # de Sveltia-inlogworker op Cloudflare
+  base_url: https://sveltia-cms-auth.jack-verstappen.workers.dev   # de Sveltia-inlogworker op Cloudflare
 
 
 media_folder: "public/media"
