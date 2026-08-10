@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img" aria-label="ziekte werk">
+  <g fill="none" stroke="#000000" stroke-width="7.5" stroke-linecap="butt" stroke-linejoin="miter">
+    <path d="M27 14 H15 V86 H27"></path>
+    <path d="M73 14 H85 V86 H73"></path>
+  </g>
+  <path fill="#000000" d="M38 20 H62 V26 L47.5 34 H62 V40 H38 V34 L52.5 26 H38 Z"></path>
+  <g fill="#000000">
+    <path d="M34 60 L41 60 L48.5 82 L41.5 82 Z"></path>
+    <path d="M46.5 66 L53.5 66 L48.5 82 L41.5 82 Z"></path>
+    <path d="M46.5 66 L53.5 66 L58.5 82 L51.5 82 Z"></path>
+    <path d="M59 60 L66 60 L58.5 82 L51.5 82 Z"></path>
+  </g>
+  <g fill="none" stroke="#0b78bf" stroke-width="5" stroke-linecap="butt" stroke-linejoin="miter">
+    <path d="M32 50 H68"></path>
+    <path d="M41 42 L32 50 L41 58"></path>
+    <path d="M59 42 L68 50 L59 58"></path>
+  </g>
+</svg>
