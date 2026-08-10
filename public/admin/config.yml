@@ -10,6 +10,11 @@ public_folder: "/media"
 locale: nl
 publish_mode: simple
 
+app_title: Ziekte ⇔ Werk - Admin
+logo:
+  src: /icon-512.png
+  show_in_header: true
+
 collections:
   - name: nummers
     label: "Publicaties"
