@@ -12,43 +12,78 @@ const nummers = (await getCollection("nummers")).sort((a, b) => a.data.nummer - 
       alles wat we tot nu toe maakten
     </h1>
     <p style="font-size: 19px; line-height: 1.4; max-width: 46ch; margin: 0">
-      De tijdschriften zijn op diverse plekken te vinden. Mail ons om te weten waar. Elk nummer is ook gratis online te lezen en te downloaden als PDF.
+      Elk nummer is gratis online te lezen en te downloaden als PDF. Wil je een papieren
+      exemplaar, of kun je het niet betalen? Mail ons — dan sturen we er een op.
     </p>
   </section>
 
   <section style="padding: 0 clamp(16px, 4vw, 32px) 48px">
-    <div style="overflow-x: auto; margin-top: 20px">
-      <table class="table" style="width: 100%; min-width: 640px">
-        <thead>
-          <tr><th>Nr.</th><th>Titel</th><th>Jaar</th><th>Omvang</th><th>Status</th><th></th></tr>
-        </thead>
-        <tbody>
-          {nummers.map((n) => (
-            <tr>
-              <td style="font-family: var(--font-heading); font-size: 18px">{String(n.data.nummer).padStart(2, "0")}</td>
-              <td style="font-family: var(--font-heading); font-size: 20px">{n.data.titel}</td>
-              <td>{n.data.jaar}</td>
-              <td>{n.data.paginas} p.</td>
-              <td><span class="tag tag-outline" style="border-radius: 0">{n.data.status}</span></td>
-              <td style="text-align: right; white-space: nowrap">
-                <a href={`/lezen/${n.data.nummer}`} style="font-family: var(--font-heading); letter-spacing: 0.08em; text-transform: uppercase">Lees online</a>
-                {n.data.artikelen.length > 0 && (
-                  <>
-                    <span style="opacity: 0.4">·</span>
-                    <a href={`/luister/${n.data.nummer}`} style="font-family: var(--font-heading); letter-spacing: 0.08em; text-transform: uppercase">Luister</a>
-                  </>
-                )}
-                <span style="opacity: 0.4">·</span>
-                <a href={n.data.pdf} download style="font-family: var(--font-heading); letter-spacing: 0.08em; text-transform: uppercase">PDF</a>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin: 28px 0 14px">
+      <h2 style="font-size: clamp(24px, 3vw, 34px); margin: 0">Alle nummers</h2>
+      <span style="font-size: 12.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-700)">Klap open voor de artikelen</span>
+    </div>
+
+    <div style="border-top: 1px solid var(--color-text)">
+      {nummers.map((n) => (
+        <details name="nummer" style="border-bottom: 1px solid var(--color-divider)">
+          <summary style="list-style: none; cursor: pointer; display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: baseline; padding: 18px 4px">
+            <span style="flex: 0 0 42px; font-family: var(--font-heading); font-size: 22px; color: var(--color-accent-700)">{String(n.data.nummer).padStart(2, "0")}</span>
+            <span style="flex: 2 1 240px; min-width: 0">
+              <span style="display: block; font-family: var(--font-heading); font-size: 26px; line-height: 1.05">{n.data.titel}</span>
+              <span style="display: block; font-size: 13.5px; color: color-mix(in srgb, var(--color-text) 68%, transparent)">
+                {n.data.jaar} · {n.data.paginas} p.
+                {n.data.artikelen.length > 0 && ` · ${n.data.artikelen.length} artikelen`}
+              </span>
+            </span>
+            <span class="tag tag-outline" style="border-radius: 0; flex: 0 0 auto">{n.data.status}</span>
+            <span style="margin-left: auto; display: flex; gap: 14px; flex-wrap: wrap; font-family: var(--font-heading); font-size: 13.5px; letter-spacing: 0.08em; text-transform: uppercase">
+              <a href={`/lezen/${n.data.nummer}`}>Lees online</a>
+              {n.data.artikelen.length > 0 && <a href={`/luister/${n.data.nummer}`}>Luister</a>}
+              <a href={n.data.pdf} download>PDF</a>
+            </span>
+            <span aria-hidden="true" data-pijl style="flex: 0 0 auto; font-family: var(--font-heading); font-size: 20px; color: var(--color-accent-700); width: 18px; text-align: center">+</span>
+          </summary>
+
+          <div style="padding: 0 4px 22px">
+            {n.data.artikelen.length === 0 ? (
+              <p style="font-size: 14.5px; margin: 0 0 4px; color: color-mix(in srgb, var(--color-text) 70%, transparent)">
+                Van dit nummer zijn geen losse artikelen ontsloten — lees het online of download de PDF.
+              </p>
+            ) : (
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1px; background: var(--color-divider); border: 1px solid var(--color-divider)">
+                {n.data.artikelen.map((a) => (
+                  <article style="background: var(--color-bg); padding: 16px 18px; display: flex; flex-direction: column; gap: 5px">
+                    <div style="font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-700)">
+                      {n.data.nummer}-{a.n}{a.audio && " · ingesproken"}
+                    </div>
+                    <h3 style="font-size: 21px; line-height: 1.1; margin: 0">
+                      {a.audio
+                        ? <a href={`/luister/${n.data.nummer}-${a.n}`} style="color: inherit">{a.titel}</a>
+                        : a.titel}
+                    </h3>
+                    <p style="font-size: 14px; line-height: 1.5; margin: 0; color: color-mix(in srgb, var(--color-text) 72%, transparent)">{a.auteur}</p>
+                  </article>
+                ))}
+              </div>
+            )}
+          </div>
+        </details>
+      ))}
     </div>
 
     <p style="margin-top: 40px; font-size: 17px">
       Vragen over bestellen of rechten? <a href="/#contact">Neem contact op</a>.
     </p>
   </section>
+
+  <style>
+    /* Het eigen driehoekje van de browser weg; wij tonen + en −. */
+    summary::-webkit-details-marker { display: none; }
+    summary:hover { background: var(--color-accent-100); }
+    summary:focus-visible { outline: 2px solid var(--color-accent); outline-offset: -2px; }
+    details[open] > summary [data-pijl]::after { content: "−"; }
+    details:not([open]) > summary [data-pijl]::after { content: "+"; }
+    [data-pijl] { font-size: 0; }
+    [data-pijl]::after { font-size: 20px; }
+  </style>
 </Basis>
