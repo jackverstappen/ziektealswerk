@@ -1,24 +1,14 @@
 ---
 titel: Wat we doen en wie we zijn
 foto: /media/landingpage-cover.jpg
-fotobijschrift: Fig. 01 — bijeenkomst van de werkgroep
+fotobijschrift: Fig. 01 — Reinventing Participation - Collage door collectief Ziekte ⬄ Werk, 2026
 ---
 
-Wij zijn een groep mensen die elkaar vond rondom één vraag. Mensen die met een
-ziekte leven worden vaak "ongeschikt voor werk" verklaard, terwijl ze hard
-werken aan hun herstel, worstelen met de bijbehorende bureaucratie, en soms
-ook nog vrijwilligerswerk doen.
+Wij zijn een groep mensen die elkaar vond rondom één vraag. Mensen die met een ziekte leven worden vaak "ongeschikt voor werk" verklaard, terwijl ze hard werken aan hun herstel, worstelen met de bijbehorende bureaucratie, en soms ook nog vrijwilligerswerk doen. Is dat werk dan niet ook werk? Wij denken van wel. En we denken dat het de moeite waard is om dat samen op te schrijven, te tekenen, te bespreken en te laten zien.
 
-Is dat werk dan niet ook werk? Wij denken van wel. En we denken dat het de
-moeite waard is om dat samen op te schrijven, te tekenen, te bespreken en te
-laten zien.
-kolom_rechts: |
-De groep ontstond vanuit het onderzoek _Performing Working_ van Philippine
-Hoegen. Sindsdien komen we samen, maken we een publicatie, en organiseren we
-bijeenkomsten waar ervaring, kunst en beleid elkaar tegenkomen.
+De groep ontstond vanuit het onderzoek _Performing Working_ van Philippine Hoegen. Sindsdien komen we samen, maken we een publicatie, en organiseren we bijeenkomsten waar ervaring, kunst en beleid elkaar tegenkomen.
 
-We werken traag, in ons eigen tempo, met ruimte voor afzeggen. Dat is geen
-gebrek — dat is de methode.
+We werken traag, in ons eigen tempo, met ruimte voor afzeggen. Dat is geen gebrek — dat is de methode.
 
 We leven in een maatschappij waarin het doen van betaald werk boven al het andere wordt gewaardeerd en status geeft. Wie ziek is en niet deelneemt aan de arbeidsmarkt, mist die waardering. Maar ziek zijn is keihard werken. Veel van dat werk is onzichtbaar en wordt helemaal niet erkend als werk. Je kunt er ook niet voor leren. Het is een kwestie van vallen en opstaan en gaandeweg leren omgaan met je ziekte en de impact daarvan op het dagelijkse leven. 
 
@@ -26,7 +16,7 @@ Dat maakt mensen met een chronische ziekte door de wol geverfde ervaringsdeskund
 
 Als collectief Ziekte <span style="color: var(--color-accent)">⇔</span> Werk zijn we in co-creatieve werksessies op zoek gegaan naar een manier om  deze kennis te delen op onze eigen manier. Ons onderzoek richt zich op het zichtbaar maken van het onzichtbare werk van leven met ziekte, zonder dat een ander zich deze persoonlijke verhalen en gegevens toe-eigent en we het eigenaarschap verliezen. Hoe we dat hebben aangepakt, hoe we met elkaar hebben samengewerkt en hoe we onze eigen werkvoorwaarden hebben bepaald, doen we hier ook uit de doeken. In dit verhaal zijn we allemaal onderwerp, mede auteur, schrijver, maker en onderzoeker tegelijk.
 
-##  Wie we zijn
+## Wie we zijn
 
 Wij zijn Peter van den Berg, Hermine ‘t Hart, [Philippine Hoegen]("https://philippinehoegen-com.vercel.app/"), Sarah Kaushik, Kalina Schneider, Bart Schut, Anna Spiliotopoulou, Severien Suthoff, Truus Teunissen, Wim de Wit, Nika van Woenzel en Dayenne Zwaagman.
 
