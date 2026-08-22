@@ -8,7 +8,7 @@ de site wordt daarna automatisch opnieuw gebouwd en gepubliceerd.
 
 ## Voor wie de site bijhoudt (geen techniek nodig)
 
-Ga naar **ziekte-werk.nl/admin** en log in met je GitHub-account. Je krijgt
+Ga naar **ziektealswerk.nl/admin** en log in met je GitHub-account. Je krijgt
 formulieren voor Publicaties, Agenda en Nieuws. Opslaan is publiceren: binnen
 een paar minuten staat het online. Je hoeft niets te installeren en je kunt
 niets stukmaken — elke wijziging is terug te draaien.
