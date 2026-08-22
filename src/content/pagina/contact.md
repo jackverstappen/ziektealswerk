@@ -1,7 +1,6 @@
 ---
-titel: "Contacteer ons"
-formulier: ""
+titel: Contacteer ons
+formulier: ''
 ---
-
 
 [info@ziektealswerk.nl](mailto:info@ziektealswerk.nl)
