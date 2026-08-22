@@ -18,9 +18,9 @@ Als collectief Ziekte <span style="color: var(--color-accent)">⇔</span> Werk z
 
 ## Wie we zijn
 
-Wij zijn Peter van den Berg, Hermine ‘t Hart, [Philippine Hoegen]("https://philippinehoegen-com.vercel.app/"), Sarah Kaushik, Kalina Schneider, Bart Schut, Anna Spiliotopoulou, Severien Suthoff, Truus Teunissen, Wim de Wit, Nika van Woenzel en Dayenne Zwaagman.
+Wij zijn Peter van den Berg, Hermine ‘t Hart, [Philippine Hoegen](https://philippinehoegen-com.vercel.app/), Sarah Kaushik, Kalina Schneider, Bart Schut, Anna Spiliotopoulou, Severien Suthoff, Truus Teunissen, Wim de Wit, Nika van Woenzel en Dayenne Zwaagman.
 
-We leerden elkaar kennen in 2023, toen Philippine als kunstenaar en onderzoeker met een project over werk ([Performing Working]("https://www.hku.nl/het-werk-van-hku/verhalen/wat-gebeurt-er-als-we-onzichtbare-arbeid-expliciet-maken") genaamd) aanklopte bij het UMCU met de vraag: mensen die met ziekte leven zijn vaak arbeidsongeschikt verklaard, maar ondertussen werken ze heel hard – aan hun eigen ziekteproces, de bureaucratie daarom heen, pijn en energiemanagement, noem maar op, en daarnaast doen veel mensen mee aan patiënt participatieve onderzoeken, vrijwilligerswerk enz… is dat niet gewoon werk? 
+We leerden elkaar kennen in 2023, toen Philippine als kunstenaar en onderzoeker met een project over werk ([Performing Working](https://www.hku.nl/het-werk-van-hku/verhalen/wat-gebeurt-er-als-we-onzichtbare-arbeid-expliciet-maken) genaamd) aanklopte bij het UMCU met de vraag: mensen die met ziekte leven zijn vaak arbeidsongeschikt verklaard, maar ondertussen werken ze heel hard – aan hun eigen ziekteproces, de bureaucratie daarom heen, pijn en energiemanagement, noem maar op, en daarnaast doen veel mensen mee aan patiënt participatieve onderzoeken, vrijwilligerswerk enz… is dat niet gewoon werk? 
 
 Dat sprak een aantal mensen heel erg aan. We begonnen met elkaar te werken, maakten met anderen samen een publicatie genaamd <i>Een Informele Handleiding voor Ziekte: Vaardigheden, tips & tricks, voor en door mensen die leven met ziekte</i>. Toen waren we nog lang niet klaar met het onderwerp, en werd het idee van 3 tijdschriften geboren. Inmiddels noemen we ons een collectief, met dezelfde naam als deze tijdschriften serie: Ziekte ⬄ Werk.
 
