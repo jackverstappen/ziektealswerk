@@ -46,7 +46,7 @@ collections:
           - { name: auteur, label: "Auteur", widget: string }
           - { name: lezer, label: "Ingesproken door", widget: string, required: false }
           - { name: samenvatting, label: "Korte samenvatting", widget: text, hint: "Twee regels. Dit staat in de podcast-apps." }
-          - { name: audio, label: "Link naar de mp3", widget: string, required: false, hint: "Volledige URL, bijvoorbeeld van Internet Archive. Niet hier uploaden — mp3's zijn te groot voor de site." }
+          - { name: audio, label: "Link naar de m4a/mp3", widget: string, required: false, hint: "Volledige URL, bijvoorbeeld van Internet Archive. Niet hier uploaden — m4a/mp3's zijn te groot voor de site." }
           - { name: duur, label: "Duur in seconden", widget: number, value_type: int, required: false }
           - { name: bytes, label: "Bestandsgrootte in bytes", widget: number, value_type: int, required: false, hint: "Rechtsklik het bestand → Info. Podcast-apps vragen erom." }
           - { name: transcript, label: "Transcript", widget: text, required: false, hint: "Wordt de leesmodus voor wie niet kan luisteren of het beeld niet kan zien." }
