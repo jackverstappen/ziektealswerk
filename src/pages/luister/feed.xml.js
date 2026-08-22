@@ -8,7 +8,7 @@ const SHOW = {
     "Over werk dat niet meetelt: herstellen, wachten, formulieren invullen, en toch doorgaan.",
   taal: "nl-NL",
   auteur: "Werkgroep ziekte ⇔ werk",
-  email: "hallo@ziekte-werk.nl",
+  email: "info@ziektealswerk.nl",
   omslag: "/podcast-omslag.jpg",
   categorie: "Society & Culture"
 };

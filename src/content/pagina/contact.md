@@ -4,4 +4,4 @@ formulier: ""
 ---
 
 
-[hallo@ziektealswerk.nl](mailto:hallo@ziektealswerk.nl)
+[info@ziektealswerk.nl](mailto:info@ziektealswerk.nl)
