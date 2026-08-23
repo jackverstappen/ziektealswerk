@@ -13,7 +13,7 @@
 import { readFile, writeFile, mkdir, readdir, access } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { createCanvas } from "@napi-rs/canvas";
+import { createCanvas, Path2D, ImageData, DOMMatrix } from "@napi-rs/canvas";
 
 const wortel = join(dirname(fileURLToPath(import.meta.url)), "..");
 const BREEDTE = 1400;
@@ -32,6 +32,34 @@ const standaardLetters = join(
   "../../standard_fonts/"
 );
 
+// pdf.js verwacht deze namen globaal zodra een pagina afbeeldingen, maskers
+// of transparantie bevat. In Node bestaan ze niet, dus lenen we ze van
+// @napi-rs/canvas. Zonder dit verdwijnt de afbeelding stil, of wordt de
+// hele pagina wit.
+globalThis.Path2D ??= Path2D;
+globalThis.ImageData ??= ImageData;
+globalThis.DOMMatrix ??= DOMMatrix;
+
+// Voor softmasks, afbeeldingsmaskers en blend-modi maakt pdf.js zélf extra
+// canvassen aan — in de browser via document.createElement. Die weg is er
+// hier niet, dus leveren we een eigen fabriek aan.
+class CanvasFabriek {
+  create(breedte, hoogte) {
+    const canvas = createCanvas(Math.max(1, breedte | 0), Math.max(1, hoogte | 0));
+    return { canvas, context: canvas.getContext("2d") };
+  }
+  reset(doos, breedte, hoogte) {
+    doos.canvas.width = Math.max(1, breedte | 0);
+    doos.canvas.height = Math.max(1, hoogte | 0);
+  }
+  destroy(doos) {
+    doos.canvas.width = 0;
+    doos.canvas.height = 0;
+    doos.canvas = null;
+    doos.context = null;
+  }
+}
+
 async function nummersUitContent() {
   const map = join(wortel, "src/content/nummers");
   const bestanden = (await readdir(map)).filter((f) => /\.mdx?$/.test(f));
@@ -41,7 +69,8 @@ async function nummersUitContent() {
       // De kop staat tussen twee regels met ---; het CMS laat er soms
       // spaties of een Windows-regeleinde achter, vandaar de ruimere match.
       const kop = /^---\r?\n([\s\S]*?)\r?\n---/.exec(tekst)?.[1] ?? "";
-      const nummer = Number(/^nummer:\s*["']?(\d+)/m.exec(kop)?.[1]);
+      const gevonden = /^nummer:\s*["']?(\d+)/m.exec(kop)?.[1];
+      const nummer = gevonden === undefined ? NaN : Number(gevonden);
       const pdf = /^pdf:\s*["']?([^"'\r\n]+)/m.exec(kop)?.[1]?.trim();
       const paginas = Number(/^paginas:\s*["']?(\d+)/m.exec(kop)?.[1]);
       return { nummer, pdf, paginas, bron: f };
@@ -78,9 +107,14 @@ async function rendered(nummer, pdfPad) {
   }
   const doc = await pdfjs.getDocument({
     data,
+    // In Node moet dit AAN staan: pdfjs kan hier geen lettertypen bij het
+    // systeem registreren, dus tekent hij de letters als vormen. Zet je dit
+    // uit, dan wordt elk teken een vakje met een kruis.
     disableFontFace: true,
-    useSystemFonts: true,
-    standardFontDataUrl: standaardLetters
+    useSystemFonts: false,
+    standardFontDataUrl: standaardLetters,
+    CanvasFactory: CanvasFabriek,
+    canvasFactory: new CanvasFabriek()
   }).promise;
   const tekst = [];
 
@@ -89,7 +123,18 @@ async function rendered(nummer, pdfPad) {
     const basis = pagina.getViewport({ scale: 1 });
     const vp = pagina.getViewport({ scale: BREEDTE / basis.width });
     const canvas = createCanvas(Math.round(vp.width), Math.round(vp.height));
-    await pagina.render({ canvasContext: canvas.getContext("2d"), viewport: vp }).promise;
+    const ctx = canvas.getContext("2d");
+    // Een pagina zonder eigen achtergrond blijft anders doorzichtig, wat in
+    // een JPEG zwart wordt.
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    try {
+      await pagina.render({ canvasContext: ctx, viewport: vp }).promise;
+    } catch (fout) {
+      // Doorgaan: één stukgelopen pagina mag de hele build niet stilzetten.
+      // De melding hieronder vertelt wélke pagina en waarom.
+      console.warn(`\nnummer ${nummer}, pagina ${p}: tekenen mislukt — ${fout?.message || fout}`);
+    }
     await writeFile(
       join(uit, `p${String(p).padStart(2, "0")}.jpg`),
       await canvas.encode("jpeg", Math.round(KWALITEIT * 100))
