@@ -47,7 +47,9 @@ const ingesproken = nummers.some((n) => n.data.artikelen.some((a) => a.audio));
             </span>
             <span class="tag tag-outline" style="border-radius: 0; flex: 0 0 auto">{n.data.status}</span>
             <span style="margin-left: auto; display: flex; gap: 14px; flex-wrap: wrap; font-family: var(--font-heading); font-size: 13.5px; letter-spacing: 0.08em; text-transform: uppercase">
-              <a href={`/lezen/${n.data.nummer}`}>Lees online</a>
+              <a href={`/lezen/${n.data.nummer}`}>
+                <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%0A%3E%3Cpath d='M12 4c4.29 0 7.863 2.429 10.665 7.154l.22 .379l.045 .1l.03 .083l.014 .055l.014 .082l.011 .1v.11l-.014 .111a.992 .992 0 0 1 -.026 .11l-.039 .108l-.036 .075l-.016 .03c-2.764 4.836 -6.3 7.38 -10.555 7.499l-.313 .004c-4.396 0 -8.037 -2.549 -10.868 -7.504a1 1 0 0 1 0 -.992c2.831 -4.955 6.472 -7.504 10.868 -7.504zm0 5a3 3 0 1 0 0 6a3 3 0 0 0 0 -6z' /%3E%3C/svg%3E%0A" />
+              </a>
               <a href={n.data.pdf} download>PDF</a>
             </span>
             <span aria-hidden="true" data-pijl style="flex: 0 0 auto; font-family: var(--font-heading); font-size: 20px; color: var(--color-accent-700); width: 18px; text-align: center">+</span>
@@ -73,9 +75,7 @@ const ingesproken = nummers.some((n) => n.data.artikelen.some((a) => a.audio));
                         {a.auteur}{a.lezer && ` · gelezen door ${a.lezer}`}
                       </div>
                     </div>
-                    <img src='data:image/svg+xml;charset=utf-8,<svg width="19" height="19" viewBox="0 0 190 190" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 91C0 96 2 100 5 103L79 178C86 184 97 184 103 178L175 106C181 100 181 89 175 82L101 8C97 5 93 3 89 3H17C7 3 0 10 0 19V91ZM39 25C49 25 56 33 56 42 56 51 49 59 39 59 30 59 23 51 23 42 23 33 30 25 39 25Z" fill="firebrick"/></svg>'/>
-                    <img src='data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10a7 7 0 1 1 13 3.6a10 10 0 0 1 -2 2a8 8 0 0 0 -2 3a4.5 4.5 0 0 1 -6.8 1.4" /><path d="M10 10a3 3 0 1 1 5 2.2" /></svg>' />
-                    <img src='data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4c4.29 0 7.863 2.429 10.665 7.154l.22 .379l.045 .1l.03 .083l.014 .055l.014 .082l.011 .1v.11l-.014 .111a.992 .992 0 0 1 -.026 .11l-.039 .108l-.036 .075l-.016 .03c-2.764 4.836 -6.3 7.38 -10.555 7.499l-.313 .004c-4.396 0 -8.037 -2.549 -10.868 -7.504a1 1 0 0 1 0 -.992c2.831 -4.955 6.472 -7.504 10.868 -7.504zm0 5a3 3 0 1 0 0 6a3 3 0 0 0 0 -6z" /></svg>' />
+                    <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%0A%3E%3Cpath d='M6 10a7 7 0 1 1 13 3.6a10 10 0 0 1 -2 2a8 8 0 0 0 -2 3a4.5 4.5 0 0 1 -6.8 1.4' /%3E%3Cpath d='M10 10a3 3 0 1 1 5 2.2' /%3E%3C/svg%3E"/>
                     {a.audio ? (
                       <audio controls preload="none" src={a.audio} style="flex: 1 1 250px; height: 36px; min-width: 0"></audio>
                     ) : (
