@@ -137,7 +137,8 @@ function schoon(s) {
 }
 
 for (const n of await nummersUitContent()) {
-  if (!n.nummer || !n.pdf) {
+  // Number.isFinite, niet !n.nummer: nummer 0 bestaat en is geldig.
+  if (!Number.isFinite(n.nummer) || !n.pdf) {
     console.warn(`${n.bron}: geen nummer of pdf in de kop, overgeslagen`);
     continue;
   }
