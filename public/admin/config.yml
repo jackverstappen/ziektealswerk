@@ -24,7 +24,7 @@ collections:
     slug: "{{nummer}}"
     summary: "Nummer {{nummer}} — {{titel}}"
     fields:
-      - { name: nummer, label: "Nummernummer", widget: number, value_type: int, hint: "1, 2, 3 … Dit staat in de gedrukte QR-codes en verandert nooit meer." }
+      - { name: nummer, label: "Nummernummer", widget: number, value_type: int, min: 0, required: false, hint: "0, 1, 2, 3 … Altijd invullen. Dit staat in de gedrukte QR-codes en verandert nooit meer." }
       - { name: titel, label: "Titel", widget: string }
       - { name: ondertitel, label: "Ondertitel", widget: string, required: false }
       - { name: jaar, label: "Jaar", widget: number, value_type: int }
