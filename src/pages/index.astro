@@ -39,36 +39,10 @@ const maand = (d) =>
     </div>
   </section>
 
-  <section id="over" style="border-bottom: 1px solid var(--color-text)">
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); align-items: stretch">
-      <div style="padding: clamp(28px, 6vw, 44px) clamp(16px, 4vw, 32px); border-right: 1px solid var(--color-text)">
-        <h6 style="color: var(--color-accent-700); margin: 0 0 24px">01 — Over ons</h6>
-        <h2 style="font-size: clamp(32px, 4vw, 54px); line-height: 1.02; margin: 0 0 24px">
-          {over.titel}
-        </h2>
-        <div style="font-size: 15.5px; line-height: 1.6">
-          <OverTekst />
-        </div>
-      </div>
-
-      <figure class="blueprint" style="position: relative; margin: 0; border: 0; min-height: min(520px, 78vw)">
-        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
-        <div style="position: absolute; inset: 0">
-          <img src={over.foto} alt={over.fotobijschrift ?? ""} onerror="this.style.display='none'" style="width: 100%; height: 100%; object-fit: cover" />
-        </div>
-        {over.fotobijschrift && (
-          <figcaption style="position: absolute; left: 14px; bottom: 12px; z-index: 3; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-bg); mix-blend-mode: difference">
-            {over.fotobijschrift}
-          </figcaption>
-        )}
-      </figure>
-    </div>
-  </section>
-
   <section id="publicaties" style="border-bottom: 1px solid var(--color-text); padding: 44px 0 48px">
     <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; padding: 0 clamp(16px, 4vw, 32px) 24px; flex-wrap: wrap">
       <div>
-        <h6 style="color: var(--color-accent-700); margin: 0 0 12px">02 — Publicaties</h6>
+        <h6 style="color: var(--color-accent-700); margin: 0 0 12px">01 — Publicaties</h6>
         <h2 style="font-size: clamp(30px, 4vw, 50px); line-height: 1.02; margin: 0; max-width: 22ch">Onze publicaties zover</h2>
       </div>
       <div style="display: flex; align-items: center; gap: 14px">
@@ -123,7 +97,7 @@ const maand = (d) =>
   <section id="varia" style="border-bottom: 1px solid var(--color-text)">
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr))">
       <div style="padding: clamp(28px, 6vw, 44px) clamp(16px, 4vw, 32px); border-right: 1px solid var(--color-text)">
-        <h6 style="color: var(--color-accent-700); margin: 0 0 12px">03 — Varia</h6>
+        <h6 style="color: var(--color-accent-700); margin: 0 0 12px">02 — Varia</h6>
         <h2 style="font-size: clamp(30px, 4vw, 50px); line-height: 1.02; margin: 0 0 26px">Berichten en aankondigingen</h2>
         <div style="display: grid; gap: 1px; background: var(--color-divider); border: 1px solid var(--color-divider)">
           {nieuws.map((b) => {
@@ -140,6 +114,32 @@ const maand = (d) =>
           })}
         </div>
       </div>
+    </div>
+  </section>
+
+  <section id="over" style="border-bottom: 1px solid var(--color-text)">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); align-items: stretch">
+      <div style="padding: clamp(28px, 6vw, 44px) clamp(16px, 4vw, 32px); border-right: 1px solid var(--color-text)">
+        <h6 style="color: var(--color-accent-700); margin: 0 0 24px">03 — Over ons</h6>
+        <h2 style="font-size: clamp(32px, 4vw, 54px); line-height: 1.02; margin: 0 0 24px">
+          {over.titel}
+        </h2>
+        <div style="font-size: 15.5px; line-height: 1.6">
+          <OverTekst />
+        </div>
+      </div>
+
+      <figure class="blueprint" style="position: relative; margin: 0; border: 0; min-height: min(520px, 78vw)">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="position: absolute; inset: 0">
+          <img src={over.foto} alt={over.fotobijschrift ?? ""} onerror="this.style.display='none'" style="width: 100%; height: 100%; object-fit: cover" />
+        </div>
+        {over.fotobijschrift && (
+          <figcaption style="position: absolute; left: 14px; bottom: 12px; z-index: 3; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-bg); mix-blend-mode: difference">
+            {over.fotobijschrift}
+          </figcaption>
+        )}
+      </figure>
     </div>
   </section>
 
