@@ -22,13 +22,13 @@ const tekst = Object.fromEntries(
 const maand = (d) =>
   d.toLocaleDateString("nl-NL", { month: "short", year: "numeric" }).replace(".", "");
 ---
+
+
+<Basis titel="COLLECTIEF ZIEKTE  WERK: WIE WE ZIJN EN WAT WE DOEN">
 <h4>Test</h4>
 ```js
 import {speak, stop, getVoicesFor} from "./components/speak.js";
 const dutch = await getVoicesFor("nl");
-
-```
-
 ```js
 display(Inputs.button("Lees voor", {reduce: () => speak("Leven met ziekte is hard werken. Het vraagt vaardigheden, kost moeite en veel tijd. Dat werk doe je zonder voorbereiding, erkenning en in onzichtbaarheid. Ziekte ⇔ Werk stelt de vraag: wat levert het op als we leven met ziekte bekijken door de lens van werk? Wat kunnen we dan zeggen over de vaardigheden die je ontwikkelt, hoe dat werk er uitziet en wat hij brijdraagt aan een groter context?",{voice: dutch[0]})}));
 display(Inputs.button([
@@ -40,7 +40,6 @@ invalidation.then(stop);
 ```
 
 
-<Basis titel="COLLECTIEF ZIEKTE  WERK: WIE WE ZIJN EN WAT WE DOEN">
   <section id="top" style="padding: clamp(36px, 8vw, 64px) clamp(16px, 4vw, 32px) 40px; border-bottom: 1px solid var(--color-text)">
     <div style="display: flex; justify-content: space-between; gap: 24px; font-family: var(--font-heading); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: 28px">
       <span>COLLECTIEF ZIEKTE  WERK: WIE WE ZIJN EN WAT WE DOEN</span>
