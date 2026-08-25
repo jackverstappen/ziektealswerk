@@ -25,16 +25,6 @@ const maand = (d) =>
 
 
 <Basis titel="COLLECTIEF ZIEKTE⇔WERK: WIE WE ZIJN EN WAT WE DOEN">
-<script>
-  import { speak, stop } from "../components/speak.js";
-
-  document.getElementById("lees-voor")?.addEventListener("click", () => {
-    const bron = document.querySelector("#over .over-tekst");
-    if (bron) speak(bron.innerText);
-  });
-
-  document.getElementById("stop-lezen")?.addEventListener("click", stop);
-</script>
   <section id="top" style="padding: clamp(36px, 8vw, 64px) clamp(16px, 4vw, 32px) 40px; border-bottom: 1px solid var(--color-text)">
     <div style="display: flex; justify-content: space-between; gap: 24px; font-family: var(--font-heading); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: 28px">
       <span>COLLECTIEF ZIEKTE  WERK: WIE WE ZIJN EN WAT WE DOEN</span>
@@ -256,4 +246,16 @@ const maand = (d) =>
       });
     })();
   </script>
+
+  <script is:inline>
+  import { speak, stop } from "../components/speak.js";
+
+  document.getElementById("lees-voor")?.addEventListener("click", () => {
+    const bron = document.querySelector("#over .over-tekst");
+    if (bron) speak(bron.innerText);
+  });
+
+  document.getElementById("stop-lezen")?.addEventListener("click", stop);
+</script>
+
 </Basis>
