@@ -22,13 +22,21 @@ const tekst = Object.fromEntries(
 const maand = (d) =>
   d.toLocaleDateString("nl-NL", { month: "short", year: "numeric" }).replace(".", "");
 ---
-
+<h4>Test</h4>
 ```js
-import {speak} from "./components/speak.js";
+import {speak, stop, getVoicesFor} from "./components/speak.js";
+const dutch = await getVoicesFor("nl");
+
 ```
 
 ```js
-display(Inputs.button("Lees voor", {reduce: () => speak("Leven met ziekte is hard werken. Het vraagt vaardigheden, kost moeite en veel tijd. Dat werk doe je zonder voorbereiding, erkenning en in onzichtbaarheid. Ziekte ⇔ Werk stelt de vraag: wat levert het op als we leven met ziekte bekijken door de lens van werk? Wat kunnen we dan zeggen over de vaardigheden die je ontwikkelt, hoe dat werk er uitziet en wat hij brijdraagt aan een groter context?")}));
+display(Inputs.button("Lees voor", {reduce: () => speak("Leven met ziekte is hard werken. Het vraagt vaardigheden, kost moeite en veel tijd. Dat werk doe je zonder voorbereiding, erkenning en in onzichtbaarheid. Ziekte ⇔ Werk stelt de vraag: wat levert het op als we leven met ziekte bekijken door de lens van werk? Wat kunnen we dan zeggen over de vaardigheden die je ontwikkelt, hoe dat werk er uitziet en wat hij brijdraagt aan een groter context?",{voice: dutch[0]})}));
+display(Inputs.button([
+  ["▶ Afspelen", () => speak(entry.body, {voice: dutch[0]})],
+  ["■ Stop", stop]
+]));
+invalidation.then(stop);
+
 ```
 
 
