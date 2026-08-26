@@ -248,12 +248,16 @@ const maand = (d) =>
   </script>
 
   <script>
-  import { speak, stop, getVoicesFor } from "../components/speak.js";
+
+  import { speak, stop, getVoicesFor } from "../scripts/speak.js";
 
   // Resolve voices once, at load — not inside the click handler.
   let stem = null;
   getVoicesFor("nl").then((v) => {
-    stem = v[0] ?? null;
+    console.log("gotVoices",v);
+    const google = v.filter(n=>/Google/.test(n.name))
+    console.log(google);
+    stem = google[0] ?? v[0] ?? null;
     if (!stem) console.warn("Geen Nederlandse stem beschikbaar op dit systeem.");
   });
 
