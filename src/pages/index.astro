@@ -131,7 +131,7 @@ const maand = (d) =>
         <h2 style="font-size: clamp(32px, 4vw, 54px); line-height: 1.02; margin: 0 0 24px">
           {over.titel}
         </h2>
-        <div style="font-size: 15.5px; line-height: 1.6">
+        <div class="over-tekst" style="font-size: 15.5px; line-height: 1.6">
           <OverTekst />
         </div>
       </div>
@@ -248,14 +248,22 @@ const maand = (d) =>
   </script>
 
   <script is:inline>
-  import { speak, stop } from "../components/speak.js";
+  import { speak, stop, getVoicesFor } from "../scripts/speak.js";
+
+  // Resolve voices once, at load — not inside the click handler.
+  let stem = null;
+  getVoicesFor("nl").then((v) => {
+    stem = v[0] ?? null;
+    if (!stem) console.warn("Geen Nederlandse stem beschikbaar op dit systeem.");
+  });
 
   document.getElementById("lees-voor")?.addEventListener("click", () => {
     const bron = document.querySelector("#over .over-tekst");
-    if (bron) speak(bron.innerText);
+    if (!bron) return console.error("Bron voor voorlezen niet gevonden.");
+    speak(bron.innerText, { voice: stem }).catch((e) => console.error("TTS:", e));
   });
 
-  document.getElementById("stop-lezen")?.addEventListener("click", stop);
+  document.getElementById("stop-lezen")?.addEventListener("click", stop);  
 </script>
 
 </Basis>
