@@ -247,8 +247,8 @@ const maand = (d) =>
     })();
   </script>
 
-  <script is:inline>
-  import { speak, stop, getVoicesFor } from "../scripts/speak.js";
+  <script>
+  import { speak, stop, getVoicesFor } from "../components/speak.js";
 
   // Resolve voices once, at load — not inside the click handler.
   let stem = null;
