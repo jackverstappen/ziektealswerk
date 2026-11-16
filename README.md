@@ -57,7 +57,7 @@ URL er klein onder voor wie niet scant.
 | Startpagina | `src/pages/index.astro` |
 | Publicaties | `src/pages/publicaties.astro` |
 | Agenda | `src/pages/agenda.astro` |
-| Online lezer | `src/pages/lezen/[nummer].astro` + `src/scripts/lezer.js` |
+| Online lezer | `src/pages/lees/[nummer].astro` + `src/scripts/lezer.js` |
 | Luisteren, QR-vel, artikelpagina | `src/pages/luister/[code].astro` |
 | Podcastfeed | `src/pages/luister/feed.xml.js` |
 | Balk, voettekst, mobiel menu | `src/layouts/Basis.astro` |
@@ -79,7 +79,7 @@ src/content/nummers/   één bestand per publicatie (PDF + artikelen)
 src/content/events/    agenda
 src/content/nieuws/    berichten
 scripts/render-pdf.mjs PDF → pagina-afbeeldingen + tekstlaag (draait bij build)
-src/pages/lezen/       de online lezer
+src/pages/lees/       de online lezer
 src/pages/luister/     luisterpagina's, QR-vel en feed.xml
 public/admin/          Sveltia CMS (config.yml = de formulieren)
 ```

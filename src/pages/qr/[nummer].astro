@@ -11,14 +11,26 @@ import QRCode from "qrcode";
 export async function getStaticPaths() {
   const nummers = await getCollection("nummers");
   return nummers
-    .filter((n) => n.data.artikelen.length > 0)
+    //.filter((n) => n.data.artikelen.length > 0)
     .map((n) => ({ params: { nummer: String(n.data.nummer) }, props: { n } }));
 }
 
 const { n } = Astro.props;
 const basis = Astro.site.href.replace(/\/$/, "");
 
-const codes = await Promise.all(
+const nummerURL = `${basis}/lees/${n.data.nummer}`;
+const nummerCode = {
+  ...n.data,
+  url: nummerURL,
+  svg: await QRCode.toString(nummerURL, {
+        type: "svg",
+        errorCorrectionLevel: "Q",
+        margin: 4,
+        color: { dark: "#1d2d3d", light: "#ffffff" }
+      })
+};
+
+const artikelenCodes = await Promise.all(
   n.data.artikelen.map(async (a) => {
     const url = `${basis}/luister/${n.data.nummer}-${a.n}`;
     return {
@@ -33,6 +45,33 @@ const codes = await Promise.all(
     };
   })
 );
+
+console.log('n',n.data.nummer);
+
+const bijlagen = (await getCollection("bijlagen"))
+  .filter((d)=>d.data.publicatie==n.data.nummer);
+
+console.log("b",bijlagen)
+
+const bijlageCodes = await Promise.all(bijlagen.map(async (d)=>{
+  const bijlageURL = (slug) => `${basis}/bijlage/${slug}`;
+  return {
+    ...d,
+    url: bijlageURL(d.data.slug),
+    svg: await QRCode.toString(bijlageURL(d.data.slug), {
+        type: "svg",
+        errorCorrectionLevel: "Q",
+        margin: 4,
+        color: { dark: "#1d2d3d", light: "#ffffff" }
+      })  
+    }
+  })
+);
+
+
+
+
+const codes = [nummerCode].concat(artikelenCodes).concat(bijlageCodes);
 ---
 
 <Basis titel={`QR-codes nummer ${n.data.nummer}`}>

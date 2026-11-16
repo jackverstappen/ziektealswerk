@@ -2,8 +2,8 @@
 import Basis from "../layouts/Basis.astro";
 import { getCollection, getEntry, render } from "astro:content";
 
-const nummers = (await getCollection("nummers")).sort((a, b) => b.data.nummer - a.data.nummer);
-const nieuws = (await getCollection("nieuws")).sort((a, b) => b.data.datum - a.data.datum).slice(0, 3);
+const nummers = (await getCollection("nummers")).sort((a, b) => b.data.nummer - a.data.nummer).reverse();
+const nieuws = (await getCollection("nieuws")).sort((a, b) => b.data.datum - a.data.datum).slice(0, 5);
 const ingesproken = nummers.some((n) => n.data.artikelen.some((a) => a.audio));
 
 // De twee vaste teksten, bewerkbaar via /admin → Vaste teksten.
@@ -14,6 +14,9 @@ const over = overEntry.data;
 const contact = contactEntry.data;
 const { Content: OverTekst } = await render(overEntry);
 const { Content: ContactTekst } = await render(contactEntry);
+
+
+console.log("news",nieuws);
 
 const tekst = Object.fromEntries(
   await Promise.all(nieuws.map(async (b) => [b.id, (await render(b)).Content]))
@@ -58,7 +61,7 @@ const maand = (d) =>
       {nummers.map((n) => (
         <article class="blueprint" style="flex: 0 0 min(320px, 78vw); display: flex; flex-direction: column; padding: 0; border-radius: 0">
           <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
-          <a href={`/lezen/${n.data.nummer}`} style="display: block; text-decoration: none; color: inherit">
+          <a href={`/lees/${n.data.nummer}`} style="display: block; text-decoration: none; color: inherit">
             <div style="position: relative; aspect-ratio: 3 / 4; border-bottom: 1px solid var(--color-text); overflow: hidden; background: var(--color-bg)">
               <img src={n.data.omslag} alt={`Omslag nummer ${n.data.nummer}`} loading="lazy"
                 style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top center" />

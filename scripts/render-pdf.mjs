@@ -7,10 +7,21 @@
  *   public/pagina/<nummer>/p01.jpg …    de pagina's, 1400 px breed
  *   public/pagina/<nummer>/tekst.json   de tekst per pagina (leesmodus + zoeken)
  *
+ * Spreads: sommige PDF's bevatten per PDF-pagina twee tijdschriftpagina's
+ * naast elkaar (alleen de cover en de achterkant zijn enkel). Zet dan in de
+ * kop van het nummer:
+ *
+ *   spreads: true
+ *
+ * De eerste en laatste PDF-pagina blijven dan één pagina; alle pagina's
+ * daartussen worden in een linker- en rechterhelft geknipt, elk weer 1400 px
+ * breed. Zonder dat veld (of met spreads: false) verandert er niets.
+ *
  * Al bestaande nummers worden overgeslagen, zodat een build snel blijft.
- * Opnieuw genereren: npm run paginas:forceer
+ * Opnieuw genereren (ook nodig na het aan- of uitzetten van spreads):
+ *   npm run paginas:forceer
  */
-import { readFile, writeFile, mkdir, readdir, access } from "node:fs/promises";
+import { readFile, writeFile, mkdir, readdir, access, rm } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createCanvas, Path2D, ImageData, DOMMatrix } from "@napi-rs/canvas";
@@ -73,12 +84,14 @@ async function nummersUitContent() {
       const nummer = gevonden === undefined ? NaN : Number(gevonden);
       const pdf = /^pdf:\s*["']?([^"'\r\n]+)/m.exec(kop)?.[1]?.trim();
       const paginas = Number(/^paginas:\s*["']?(\d+)/m.exec(kop)?.[1]);
-      return { nummer, pdf, paginas, bron: f };
+      // spreads: true / ja / yes → middelste PDF-pagina's in tweeën knippen.
+      const spreads = /^spreads:\s*["']?(true|ja|yes)\b/im.test(kop);
+      return { nummer, pdf, paginas, spreads, bron: f };
     })
   );
 }
 
-async function rendered(nummer, pdfPad) {
+async function rendered(nummer, pdfPad, spreads) {
   const uit = join(wortel, "public/pagina", String(nummer));
   if (!forceer && (await bestaat(join(uit, "tekst.json")))) {
     console.log(`nummer ${nummer}: al gegenereerd, overgeslagen`);
@@ -116,12 +129,33 @@ async function rendered(nummer, pdfPad) {
     CanvasFactory: CanvasFabriek,
     canvasFactory: new CanvasFabriek()
   }).promise;
-  const tekst = [];
 
-  for (let p = 1; p <= doc.numPages; p++) {
+  // Oude afbeeldingen weg: met of zonder spreads verschilt het aantal
+  // pagina's, en een overgebleven p37.jpg van een vorige run hoort er niet bij.
+  for (const f of await readdir(uit)) {
+    if (/^p\d+\.jpg$/.test(f)) await rm(join(uit, f));
+  }
+
+  const tekst = [];
+  const totaal = doc.numPages;
+  let volgnummer = 0; // nummer van de pagina zoals de lezer hem ziet
+
+  for (let p = 1; p <= totaal; p++) {
     const pagina = await doc.getPage(p);
     const basis = pagina.getViewport({ scale: 1 });
-    const vp = pagina.getViewport({ scale: BREEDTE / basis.width });
+
+    // Hoeveel tijdschriftpagina's staan er op deze PDF-pagina?
+    // Cover en achterkant zijn altijd enkel. Een middenpagina die toch
+    // staand is, is waarschijnlijk geen spread: niet knippen, wel melden.
+    let delen = 1;
+    if (spreads && p > 1 && p < totaal) {
+      if (basis.width > basis.height) delen = 2;
+      else console.warn(`\nnummer ${nummer}, pagina ${p}: staand formaat, niet geknipt`);
+    }
+
+    // Een spread wordt dubbel zo breed getekend, zodat elke helft weer
+    // BREEDTE pixels breed is.
+    const vp = pagina.getViewport({ scale: (BREEDTE * delen) / basis.width });
     const canvas = createCanvas(Math.round(vp.width), Math.round(vp.height));
     const ctx = canvas.getContext("2d");
     // Een pagina zonder eigen achtergrond blijft anders doorzichtig, wat in
@@ -135,40 +169,64 @@ async function rendered(nummer, pdfPad) {
       // De melding hieronder vertelt wélke pagina en waarom.
       console.warn(`\nnummer ${nummer}, pagina ${p}: tekenen mislukt — ${fout?.message || fout}`);
     }
-    await writeFile(
-      join(uit, `p${String(p).padStart(2, "0")}.jpg`),
-      await canvas.encode("jpeg", Math.round(KWALITEIT * 100))
-    );
 
+    // Waar de vouw zit, in pixels.
+    const vouw = delen === 2 ? Math.round(canvas.width / 2) : canvas.width;
+
+    // De tekst meteen naar schermcoördinaten (linksboven als oorsprong) en
+    // per blok onthouden op welke helft het begint. Een kop die over de vouw
+    // doorloopt, komt zo bij de linkerpagina terecht.
     const inhoud = await pagina.getTextContent();
-    // De blokken worden meteen naar schermcoördinaten omgerekend (linksboven
-    // als oorsprong, in de breedte hieronder). De browser hoeft ze straks
-    // alleen nog te schalen naar de getoonde breedte.
-    const blokken = inhoud.items
-      .filter((i) => i.str.trim())
-      .map((i) => {
-        const t = pdfjs.Util.transform(vp.transform, i.transform);
-        const grootte = Math.hypot(t[2], t[3]);
-        return {
-          s: i.str,
-          x: Math.round(t[4] * 100) / 100,
-          y: Math.round((t[5] - grootte) * 100) / 100,
-          g: Math.round(grootte * 100) / 100
-        };
-      });
-
-    tekst.push({
-      pagina: p,
-      breedte: Math.round(vp.width),
-      hoogte: Math.round(vp.height),
-      blokken,
-      plat: schoon(inhoud.items.map((i) => i.str).join(" "))
+    const stukken = inhoud.items.map((i) => {
+      const t = pdfjs.Util.transform(vp.transform, i.transform);
+      const grootte = Math.hypot(t[2], t[3]);
+      return { s: i.str, x: t[4], y: t[5] - grootte, g: grootte, deel: t[4] >= vouw ? 1 : 0 };
     });
-    process.stdout.write(`\rnummer ${nummer}: pagina ${p}/${doc.numPages}`);
+
+    for (let d = 0; d < delen; d++) {
+      const links = d === 0 ? 0 : vouw;
+      const breedte = d === 0 ? vouw : canvas.width - vouw;
+
+      let beeld = canvas;
+      if (delen === 2) {
+        beeld = createCanvas(breedte, canvas.height);
+        beeld
+          .getContext("2d")
+          .drawImage(canvas, links, 0, breedte, canvas.height, 0, 0, breedte, canvas.height);
+      }
+
+      volgnummer++;
+      await writeFile(
+        join(uit, `p${String(volgnummer).padStart(2, "0")}.jpg`),
+        await beeld.encode("jpeg", Math.round(KWALITEIT * 100))
+      );
+
+      const hier = stukken.filter((b) => b.deel === d);
+      tekst.push({
+        pagina: volgnummer,
+        pdfPagina: p,
+        breedte,
+        hoogte: canvas.height,
+        blokken: hier
+          .filter((b) => b.s.trim())
+          .map((b) => ({
+            s: b.s,
+            x: Math.round((b.x - links) * 100) / 100,
+            y: Math.round(b.y * 100) / 100,
+            g: Math.round(b.g * 100) / 100
+          })),
+        plat: schoon(hier.map((b) => b.s).join(" "))
+      });
+    }
+    process.stdout.write(`\rnummer ${nummer}: pagina ${p}/${totaal}`);
   }
 
   await writeFile(join(uit, "tekst.json"), JSON.stringify(tekst));
-  console.log(`\nnummer ${nummer}: ${doc.numPages} pagina's klaar`);
+  console.log(
+    spreads
+      ? `\nnummer ${nummer}: ${totaal} PDF-pagina's → ${volgnummer} pagina's klaar`
+      : `\nnummer ${nummer}: ${volgnummer} pagina's klaar`
+  );
 }
 
 // Afbreekstreepjes en harde regeleinden weghalen, zodat de leesmodus
@@ -187,5 +245,5 @@ for (const n of await nummersUitContent()) {
     console.warn(`${n.bron}: geen nummer of pdf in de kop, overgeslagen`);
     continue;
   }
-  await rendered(n.nummer, n.pdf);
+  await rendered(n.nummer, n.pdf, n.spreads);
 }

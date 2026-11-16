@@ -43,7 +43,7 @@ const klok = (s = 0) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padS
         <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
         <audio controls preload="metadata" src={artikel.audio} style="width: 100%"></audio>
         <p style="margin: 14px 0 0; font-size: 14px">
-          <a href={artikel.audio} download>Download het geluidsbestand</a> · <a href={`/lezen/${nummer}`}>lees dit nummer</a>
+          <a href={artikel.audio} download>Download het geluidsbestand</a> · <a href={`/lees/${nummer}`}>lees dit nummer</a>
         </p>
       </div>
     ) : (

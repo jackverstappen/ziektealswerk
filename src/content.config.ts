@@ -43,6 +43,23 @@ const nummers = defineCollection({
   })
 });
 
+// Eén nummer = één bestand in src/content/nummers/.
+// De PDF en de artikelen staan erin; de pagina-afbeeldingen worden bij het
+// bouwen automatisch uit de PDF gehaald (scripts/render-pdf.mjs).
+const bijlagen = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/bijlage" }),
+  schema: z.object({
+    slug: z.string(),
+    publicatie: z.number(),
+    titel: z.string(),
+    ondertitel: tekst,
+    jaar: z.number(),
+    paginas: z.number(),
+    verschenen: z.coerce.date(),
+  })
+});
+
+
 const events = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/events" }),
   schema: z.object({
@@ -78,4 +95,4 @@ const pagina = defineCollection({
   })
 });
 
-export const collections = { nummers, events, nieuws, pagina };
+export const collections = { nummers, events, nieuws, pagina, bijlagen };

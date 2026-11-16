@@ -2,7 +2,17 @@
 import Basis from "../layouts/Basis.astro";
 import { getCollection } from "astro:content";
 
-const nummers = (await getCollection("nummers")).sort((a, b) => a.data.nummer - b.data.nummer);
+const nummers = (await getCollection("nummers"))
+  .map((d)=>({
+    ...d,
+    //data.postfix:d.data.ondertitel && d.data.ondertitel !="" ? `- ${d.data.ondertitel}`
+  }))
+  .sort((a, b) => b.data.nummer - a.data.nummer)
+  .reverse();
+
+nummers.forEach((d)=> {
+  d.data.postfix = d.data.ondertitel && d.data.ondertitel != "-" ? `- ${d.data.ondertitel}` : undefined;
+})
 const klok = (s = 0) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, "0")}`;
 const ingesproken = nummers.some((n) => n.data.artikelen.some((a) => a.audio));
 ---
@@ -39,7 +49,7 @@ const ingesproken = nummers.some((n) => n.data.artikelen.some((a) => a.audio));
           <summary style="list-style: none; cursor: pointer; display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: baseline; padding: 18px 4px">
             <span style="flex: 0 0 42px; font-family: var(--font-heading); font-size: 22px; color: var(--color-accent-700)">{String(n.data.nummer).padStart(2, "0")}</span>
             <span style="flex: 2 1 240px; min-width: 0">
-              <span style="display: block; font-family: var(--font-heading); font-size: 26px; line-height: 1.05">{n.data.titel}</span>
+              <span style="display: block; font-family: var(--font-heading); font-size: 26px; line-height: 1.05">{n.data.titel} {n.data.postfix}</span>
               <span style="display: block; font-size: 13.5px; color: color-mix(in srgb, var(--color-text) 68%, transparent)">
                 {n.data.jaar} · {n.data.paginas} p.
                 {n.data.artikelen.length > 0 && ` · ${n.data.artikelen.length} artikel(en)`}
