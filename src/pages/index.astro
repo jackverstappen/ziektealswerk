@@ -15,9 +15,6 @@ const contact = contactEntry.data;
 const { Content: OverTekst } = await render(overEntry);
 const { Content: ContactTekst } = await render(contactEntry);
 
-
-console.log("news",nieuws);
-
 const tekst = Object.fromEntries(
   await Promise.all(nieuws.map(async (b) => [b.id, (await render(b)).Content]))
 );

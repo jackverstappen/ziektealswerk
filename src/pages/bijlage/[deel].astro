@@ -11,8 +11,9 @@ import { getCollection, render } from "astro:content";
  */
 export async function getStaticPaths() {
   const bijlagen = await getCollection("bijlagen");
-   return bijlagen.map((n) => ({
-    params: { deel: String(n.data.slug) },
+  console.log("bij",bijlagen);
+  return bijlagen.map((n) => ({
+    params: { deel: String(n.id) },
     props: { publicatie: n }
   }));
 }

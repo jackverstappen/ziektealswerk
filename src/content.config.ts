@@ -49,7 +49,6 @@ const nummers = defineCollection({
 const bijlagen = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/bijlage" }),
   schema: z.object({
-    slug: z.string(),
     publicatie: z.number(),
     titel: z.string(),
     ondertitel: tekst,
@@ -67,7 +66,7 @@ const events = defineCollection({
     datum: z.coerce.date(),
     eindtijd: z.coerce.date().optional(),
     plaats: z.string(),
-    soort: z.enum(["Leesgroep", "Presentatie", "Werksessie", "Gesprek", "Tentoonstelling"]),
+    soort: z.enum(["Leesgroep", "Symposium", "Presentatie", "Werksessie", "Gesprek", "Tentoonstelling"]),
     aanmelden: z.string().optional()
   })
 });
@@ -95,4 +94,15 @@ const pagina = defineCollection({
   })
 });
 
-export const collections = { nummers, events, nieuws, pagina, bijlagen };
+const links = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/links" }),
+schema: z.object({
+  url: z.union([
+    z.string().url(),                       // https://...
+    z.string().regex(/^\//, "moet met / beginnen"), // /nummers/12
+  ]),
+  titel: z.string().optional(),
+}),});
+
+
+export const collections = { nummers, events, nieuws, pagina, bijlagen, links };

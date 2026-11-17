@@ -1,0 +1,22 @@
+---
+// src/pages/go/[id].astro
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const links = await getCollection("links");
+  return links.map((link) => ({
+    params: { id: link.id },
+    props: { url: link.data.url },
+  }));
+}
+
+const { url } = Astro.props;
+
+// External: forward as is. Internal: put the site's base in front
+// (with no base set, BASE_URL is just "/" and nothing changes).
+const doel = url.startsWith("/")
+  ? import.meta.env.BASE_URL.replace(/\/$/, "") + url
+  : url;
+
+return Astro.redirect(doel, 301);
+---

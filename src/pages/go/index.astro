@@ -1,0 +1,59 @@
+---
+import { getCollection } from "astro:content";
+import QRCode from "qrcode";
+
+if (!Astro.site) throw new Error("Zet `site` in astro.config.mjs: QR-codes hebben een volledig adres nodig.");
+
+const basis = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+const links = await Promise.all(
+  (await getCollection("links")).map(async (l) => {
+    const pad = `${basis}/go/${l.id}`;
+    const volledig = new URL(pad, Astro.site).href;
+    const qr = await QRCode.toDataURL(volledig, { width: 512, margin: 2 });
+    return { id: l.id, titel: l.data.titel, doel: l.data.url, pad, volledig, qr };
+  })
+);
+---
+
+<ul class="links">
+  {links.map((l) => (
+    <li>
+      <img src={l.qr} alt={`QR-code voor ${l.volledig}`} width="128" height="128" />
+      <div>
+        <a href={l.pad}>{l.volledig}</a>
+        <p>Titel: {l.titel}</p>
+        <p>Doel: {l.doel}</p>
+        <button type="button" data-qr={l.qr}>Kopieer QR</button>
+        <a href={l.qr} download={`qr-${l.id}.png`}>Download</a>
+      </div>
+    </li>
+  ))}
+</ul>
+
+<script>
+  for (const knop of document.querySelectorAll<HTMLButtonElement>("button[data-qr]")) {
+    knop.addEventListener("click", async () => {
+      const tekst = knop.textContent;
+      try {
+        // The blob is handed over as a promise: Safari only allows clipboard
+        // access if the ClipboardItem is created right inside the click.
+        await navigator.clipboard.write([
+          new ClipboardItem({
+            "image/png": fetch(knop.dataset.qr!).then((r) => r.blob()),
+          }),
+        ]);
+        knop.textContent = "Gekopieerd ✓";
+      } catch {
+        knop.textContent = "Kopiëren mislukt";
+      }
+      setTimeout(() => (knop.textContent = tekst), 2000);
+    });
+  }
+</script>
+
+<style>
+  .links { list-style: none; padding: 0; display: grid; gap: 1.5rem; }
+  .links li { display: flex; gap: 1rem; align-items: center; }
+  .links img { image-rendering: pixelated; }
+</style>
