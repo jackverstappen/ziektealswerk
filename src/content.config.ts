@@ -26,6 +26,7 @@ const nummers = defineCollection({
     status: z.enum(["Nieuw", "Te bestellen", "Uitverkocht in print", "In de maak"]),
     omslag: z.string(),                 // pad in /public, bv. /omslag/1.jpg
     pdf: z.string(),                    // pad in /public, bv. /pdf/nummer-1.pdf
+    podcast: z.string().url().optional(),                       // https://...
     verschenen: z.coerce.date(),
     artikelen: z.array(
       z.object({

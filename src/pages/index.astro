@@ -5,6 +5,7 @@ import { getCollection, getEntry, render } from "astro:content";
 const nummers = (await getCollection("nummers")).sort((a, b) => b.data.nummer - a.data.nummer).reverse();
 const nieuws = (await getCollection("nieuws")).sort((a, b) => b.data.datum - a.data.datum).slice(0, 5);
 const ingesproken = nummers.some((n) => n.data.artikelen.some((a) => a.audio));
+const skip = false==true;
 
 // De twee vaste teksten, bewerkbaar via /admin → Vaste teksten.
 // De lopende tekst staat in de body van het bestand.
@@ -27,7 +28,7 @@ const maand = (d) =>
 <Basis titel="COLLECTIEF ZIEKTE⇔WERK: WIE WE ZIJN EN WAT WE DOEN">
   <section id="top" style="padding: clamp(36px, 8vw, 64px) clamp(16px, 4vw, 32px) 40px; border-bottom: 1px solid var(--color-text)">
     <div style="display: flex; justify-content: space-between; gap: 24px; font-family: var(--font-heading); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: 28px">
-      <span>COLLECTIEF ZIEKTE  WERK: WIE WE ZIJN EN WAT WE DOEN</span>
+      <h6><span>COLLECTIEF ZIEKTE ⇔ WERK: WIE WE ZIJN EN WAT WE DOEN</span></h6>
       <span>Uitgesproken als "ziekte als werk"</span>
     </div>
     <h1 style="font-size: clamp(56px, 12vw, 184px); line-height: 0.86; letter-spacing: -0.03em; text-transform: lowercase; margin: 0 0 28px; max-width: 15ch">
@@ -38,7 +39,6 @@ const maand = (d) =>
         Leven met ziekte is hard werken. Het vraagt vaardigheden, kost moeite en veel tijd. Dat werk doe je zonder voorbereiding, erkenning en in onzichtbaarheid. Ziekte ⇔ Werk stelt de vraag: wat levert het op als we leven met ziekte bekijken door de lens van werk? Wat kunnen we dan zeggen over de vaardigheden die je ontwikkelt, hoe dat werk er uitziet en wat hij bijdraagt aan een groter context?
       </p>
     </div>
-    <h4>Test</h4>
   </section>
 
   <section id="publicaties" style="border-bottom: 1px solid var(--color-text); padding: 44px 0 48px">
@@ -80,20 +80,20 @@ const maand = (d) =>
         </article>
       ))}
 
-      <article style="flex: 0 0 min(260px, 70vw); display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: 22px; border: 1px dashed var(--color-divider)">
+      {skip && (<article style="flex: 0 0 min(260px, 70vw); display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: 22px; border: 1px dashed var(--color-divider)">
         <div style="font-family: var(--font-heading); font-size: 26px; line-height: 1.05">Tijdschriften serie “Ziekte ⇔ Werk”</div>
         <p style="font-size: 14.5px; line-height: 1.5; margin: 0; color: color-mix(in srgb, var(--color-text) 70%, transparent)">
           Binnenkort hier te vinden.
         </p>
-      </article>
+      </article>)}
     </div>
 
-    <div style="display: flex; gap: 28px; flex-wrap: wrap; padding: 0 clamp(16px, 4vw, 32px)">
+    {skip && (<div style="display: flex; gap: 28px; flex-wrap: wrap; padding: 0 clamp(16px, 4vw, 32px)">
       <a href="/publicaties" style="font-family: var(--font-heading); font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase">Alle publicaties →</a>
       {ingesproken && (
         <a href="/publicaties" style="font-family: var(--font-heading); font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase">Elk artikel is ook ingesproken — luister mee →</a>
       )}
-    </div>
+    </div>)}
   </section>
 
   <section id="varia" style="border-bottom: 1px solid var(--color-text)">
@@ -119,8 +119,8 @@ const maand = (d) =>
     </div>
   </section>
 
-  <button id="lees-voor" class="btn btn-secondary" style="border-radius: 0">▶ Voorlezen</button>
-  <button id="stop-lezen" class="btn btn-secondary" style="border-radius: 0">■ Stop</button>
+  {skip && (<button id="lees-voor" class="btn btn-secondary" style="border-radius: 0">▶ Voorlezen</button>)}
+  {skip && (<button id="stop-lezen" class="btn btn-secondary" style="border-radius: 0">■ Stop</button>)}
   <section id="over" style="border-bottom: 1px solid var(--color-text)">
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); align-items: stretch">
       <div style="padding: clamp(28px, 6vw, 44px) clamp(16px, 4vw, 32px); border-right: 1px solid var(--color-text)">
