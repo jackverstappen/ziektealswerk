@@ -11,7 +11,6 @@ import { getCollection, render } from "astro:content";
  */
 export async function getStaticPaths() {
   const bijlagen = await getCollection("bijlagen");
-  console.log("bij",bijlagen);
   return bijlagen.map((n) => ({
     params: { deel: String(n.id) },
     props: { publicatie: n }
@@ -20,21 +19,23 @@ export async function getStaticPaths() {
 
 
 const {publicatie}  = Astro.props;
-console.log('bijlage', Astro.props, publicatie);
 const info = publicatie.data;
-console.log('info',info)
 //const klok = (s = 0) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, "0")}`;
 
 const {Content, headings} = await(render(publicatie));
 ---
 
 <Basis title=${info.titel}>
-<h1>{info.titel}</h1>
-<main>
+
+  <main>
     <div style="margin-inline:50px">
-        <Content/>
+      <h1>{info.titel}</h1>
+      <p style="font-size: 16px; margin: 0 0 28px; color: color-mix(in srgb, var(--color-text) 70%, transparent)">
+        {info.ondertitel}
+      </p>
+      <Content/>
     </div>
-</main>
+  </main>
 </Basis>
 <!---
 

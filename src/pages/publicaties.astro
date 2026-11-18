@@ -10,8 +10,15 @@ const nummers = (await getCollection("nummers"))
   .sort((a, b) => b.data.nummer - a.data.nummer)
   .reverse();
 
+const bijlagen = (await getCollection("bijlagen"));
+
+
 nummers.forEach((d)=> {
   d.data.postfix = d.data.ondertitel && d.data.ondertitel != "-" ? `- ${d.data.ondertitel}` : undefined;
+
+  d.data.bijlagen = bijlagen
+    .filter((n)=>n.data.publicatie==d.data.nummer);
+
 })
 const klok = (s = 0) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, "0")}`;
 const ingesproken = nummers.some((n) => n.data.artikelen.some((a) => a.audio));
@@ -40,12 +47,12 @@ const ingesproken = nummers.some((n) => n.data.artikelen.some((a) => a.audio));
    -->
     <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin: 28px 0 14px">
       <h2 style="font-size: clamp(24px, 3vw, 34px); margin: 0">Alle nummers</h2>
-      <span style="font-size: 12.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-700)">Klap open voor de artikelen</span>
+      <span style="font-size: 12.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-700)">Klap open extra's</span>
     </div>
 
     <div style="border-top: 1px solid var(--color-text)">
       {nummers.map((n) => (
-        <details name="nummer" open="true" style="border-bottom: 1px solid var(--color-divider)">
+        <details name="nummer"  style="border-bottom: 1px solid var(--color-divider)">
           <summary style="list-style: none; cursor: pointer; display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: baseline; padding: 18px 4px">
             <span style="flex: 0 0 42px; font-family: var(--font-heading); font-size: 22px; color: var(--color-accent-700)">{String(n.data.nummer).padStart(2, "0")}</span>
             <span style="flex: 2 1 240px; min-width: 0">
@@ -75,11 +82,12 @@ const ingesproken = nummers.some((n) => n.data.artikelen.some((a) => a.audio));
           </summary>
 
           <div style="padding: 0 4px 22px">
-            {n.data.artikelen.length === 0 ? (
+            {(n.data.artikelen.length === 0 && n.data.bijlagen.length === 0) && (
               <p style="font-size: 14.5px; margin: 0 0 4px; color: color-mix(in srgb, var(--color-text) 70%, transparent)">
                 Van dit nummer zijn geen losse artikelen ontsloten — lees het online of download de PDF.
               </p>
-            ) : (
+            )}
+            {n.data.artikelen.length > 0  && (
               <div style="border-top: 1px solid var(--color-divider)">
                 {n.data.artikelen.map((a) => (
                   <article style="display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; padding: 14px 2px; border-bottom: 1px solid var(--color-divider)">
@@ -101,6 +109,23 @@ const ingesproken = nummers.some((n) => n.data.artikelen.some((a) => a.audio));
                       <span style="flex: 1 1 250px; font-size: 13.5px; color: color-mix(in srgb, var(--color-text) 58%, transparent)">Opname volgt</span>
                     )}
                     {a.duur && <span style="font-size: 13.5px; font-variant-numeric: tabular-nums; flex: 0 0 auto">{klok(a.duur)}</span>}
+                  </article>
+                ))}
+              </div>
+            )}
+            {n.data.bijlagen.length> 0 && (
+              <div style="border-top: 1px solid var(--color-divider)">
+                {n.data.bijlagen.map((a) => (
+                  <article style="display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; padding: 14px 2px; border-bottom: 1px solid var(--color-divider)">
+                    <span style="flex: 0 0 42px; font-family: var(--font-heading); font-size: 15px; color: var(--color-accent-700)">{String(n.data.nummer).padStart(2, "0")} # {a.data.anker}</span>
+                    <div style="flex: 2 1 220px; min-width: 0">
+                      <div style="font-family: var(--font-heading); font-size: 21px; line-height: 1.1">
+                        <a href={`/bijlage/${a.id}`} style="color: inherit">{a.data.titel}</a> (lange versie)
+                      </div>
+                      <div style="font-size: 13.5px; color: color-mix(in srgb, var(--color-text) 68%, transparent)">
+                        {a.data.ondertitel}
+                      </div>
+                    </div>
                   </article>
                 ))}
               </div>

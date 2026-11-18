@@ -251,9 +251,7 @@ const maand = (d) =>
   // Resolve voices once, at load — not inside the click handler.
   let stem = null;
   getVoicesFor("nl").then((v) => {
-    console.log("gotVoices",v);
     const google = v.filter(n=>/Google/.test(n.name))
-    console.log(google);
     stem = google[0] ?? v[0] ?? null;
     if (!stem) console.warn("Geen Nederlandse stem beschikbaar op dit systeem.");
   });

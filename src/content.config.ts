@@ -51,6 +51,7 @@ const bijlagen = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/bijlage" }),
   schema: z.object({
     publicatie: z.number(),
+    anker: z.string().optional(),
     titel: z.string(),
     ondertitel: tekst,
     jaar: z.number(),
